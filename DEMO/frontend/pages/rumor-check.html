@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养生谣言智能识别 - 草本数智</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background-color: #f7f5f0;
+            color: #2c2c2c;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-bottom: 2px solid #8b7355;
+            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
+            transition: all 0.3s ease;
+            animation: navSlideDown 1s ease-out;
+        }
+
+        .nav-wrapper.scrolled {
+            height: 60px;
+        }
+
+        @keyframes navSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 120px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled .nav-container {
+            height: 60px;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8b7355;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #5a4a3a;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #8b7355;
+            background-color: rgba(139, 115, 85, 0.1);
+        }
+
+        .nav-menu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #8b7355;
+        }
+
+        .main-content {
+            margin-top: 140px;
+            padding-bottom: 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border-bottom: 2px solid #c9b896;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 15px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #6b5d4f;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: #fff;
+            border: 2px solid #c9b896;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .check-container {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 2px solid #d4c4a8;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 15px;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            border: 2px solid #d4c4a8;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background: #fff;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #8b7355;
+        }
+
+        .text-input::placeholder {
+            color: #a08060;
+        }
+
+        .check-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+        }
+
+        .check-btn:hover {
+            background: linear-gradient(135deg, #7a6248 0%, #8b7355 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.3);
+        }
+
+        .result-container {
+            display: none;
+            background: #fff;
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .result-container.rumor {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #fff 100%);
+        }
+
+        .result-container.truth {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+        }
+
+        .result-container.uncertain {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff3e0 0%, #fff 100%);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .result-container.rumor .result-icon {
+            background: #f44336;
+        }
+
+        .result-container.truth .result-icon {
+            background: #4caf50;
+        }
+
+        .result-container.uncertain .result-icon {
+            background: #ff9800;
+        }
+
+        .result-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .result-container.rumor .result-title {
+            color: #f44336;
+        }
+
+        .result-container.truth .result-title {
+            color: #4caf50;
+        }
+
+        .result-container.uncertain .result-title {
+            color: #ff9800;
+        }
+
+        .result-confidence {
+            font-size: 16px;
+            color: #6b5d4f;
+        }
+
+        .result-content {
+            background: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .result-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 15px;
+        }
+
+        .result-content p {
+            font-size: 16px;
+            color: #6b5d4f;
+            line-height: 1.8;
+        }
+
+        .hot-rumors {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .rumor-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .rumor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.15);
+        }
+
+        .rumor-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f44336;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .rumor-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .rumor-truth {
+            font-size: 16px;
+            color: #6b5d4f;
+            line-height: 1.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b5d4f;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tips-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px 0;
+            border-bottom: 1px solid #d4c4a8;
+        }
+
+        .tips-item:last-child {
+            border-bottom: none;
+        }
+
+        .tips-icon {
+            width: 40px;
+            height: 40px;
+            background: #8b7355;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .tips-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 8px;
+        }
+
+        .tips-content p {
+            font-size: 16px;
+            color: #6b5d4f;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-top: 2px solid #8b7355;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #5a4a3a;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #8b7355;
+        }
+
+        .footer-copyright {
+            color: #6b5d4f;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hot-rumors {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .result-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-wrapper" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
+                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
+                </svg>
+                <span>草本数智</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html">关于我们</a></li>
+                <li><a href="news.html">健康资讯</a></li>
+                <li><a href="health.html">个人健康管理</a></li>
+                <li><a href="family.html">子女父母健康看板</a></li>
+                <li><a href="profile.html">我的</a></li>
+                <li><a href="vip.html">会员</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="container">
+                <h1 class="page-title">养生谣言智能识别</h1>
+                <p class="page-subtitle">AI智能分析，助您识别养生谣言</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title">谣言识别</h2>
+                <div class="check-container">
+                    <div class="input-group">
+                        <label class="input-label">请输入您想验证的养生信息：</label>
+                        <textarea class="text-input" id="rumorInput" placeholder="例如：喝醋可以软化血管、每天走一万步最健康、吃啥补啥..."></textarea>
+                    </div>
+                    <button class="check-btn" id="checkBtn">🔍 开始识别</button>
+
+                    <div class="result-container rumor" id="resultContainer">
+                        <div class="result-header">
+                            <div class="result-icon">⚠️</div>
+                            <div>
+                                <h3 class="result-title">疑似谣言</h3>
+                                <p class="result-confidence">AI可信度：92%</p>
+                            </div>
+                        </div>
+                        <div class="result-content">
+                            <h4>分析结果</h4>
+                            <p>该说法缺乏科学依据，属于常见的养生谣言。建议您通过权威渠道获取健康信息，或咨询专业医生。</p>
+                        </div>
+                        <div class="result-content">
+                            <h4>科学真相</h4>
+                            <p>根据权威医学研究，此说法没有科学证据支持。正确的养生方法应该基于科学证据和专业指导。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">识别数据统计</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <p class="stat-number">12,580</p>
+                        <p class="stat-label">累计识别次数</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-number">8,320</p>
+                        <p class="stat-label">识别为谣言</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-number">3,860</p>
+                        <p class="stat-label">识别为真实</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-number">400</p>
+                        <p class="stat-label">待验证信息</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">热门谣言揭秘</h2>
+                <div class="hot-rumors">
+                    <div class="rumor-card">
+                        <span class="rumor-badge">谣言</span>
+                        <h3 class="rumor-title">喝醋可以软化血管</h3>
+                        <p class="rumor-truth"><strong>真相：</strong>醋进入消化系统后会被分解，无法直接作用于血管。软化血管需要通过健康的生活方式和医学治疗。</p>
+                    </div>
+                    <div class="rumor-card">
+                        <span class="rumor-badge">谣言</span>
+                        <h3 class="rumor-title">每天必须走一万步</h3>
+                        <p class="rumor-truth"><strong>真相：</strong>运动量应因人而异。中老年人过度运动可能损伤关节，建议根据自身情况适量运动。</p>
+                    </div>
+                    <div class="rumor-card">
+                        <span class="rumor-badge">谣言</span>
+                        <h3 class="rumor-title">吃啥补啥，以形补形</h3>
+                        <p class="rumor-truth"><strong>真相：</strong>这是一种误解。食物的营养价值取决于其成分，而非外形。均衡饮食才是健康之道。</p>
+                    </div>
+                    <div class="rumor-card">
+                        <span class="rumor-badge">谣言</span>
+                        <h3 class="rumor-title">保健品能治病</h3>
+                        <p class="rumor-truth"><strong>真相：</strong>保健品不能替代药物治疗疾病。生病应及时就医，遵医嘱用药。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">防骗小贴士</h2>
+                <ul class="tips-list">
+                    <li class="tips-item">
+                        <div class="tips-icon">1</div>
+                        <div class="tips-content">
+                            <h4>警惕"包治百病"</h4>
+                            <p>任何宣称能治愈所有疾病的产品或方法都是不可信的。疾病治疗需要因人而异，没有万能药。</p>
+                        </div>
+                    </li>
+                    <li class="tips-item">
+                        <div class="tips-icon">2</div>
+                        <div class="tips-content">
+                            <h4>查证信息来源</h4>
+                            <p>看到养生信息时，先查看信息来源是否权威。优先相信正规医院、医疗机构发布的信息。</p>
+                        </div>
+                    </li>
+                    <li class="tips-item">
+                        <div class="tips-icon">3</div>
+                        <div class="tips-content">
+                            <h4>咨询专业医生</h4>
+                            <p>对于重要的健康决策，一定要咨询专业医生，不要轻信网络传言或推销人员的话术。</p>
+                        </div>
+                    </li>
+                    <li class="tips-item">
+                        <div class="tips-icon">4</div>
+                        <div class="tips-content">
+                            <h4>理性看待保健品</h4>
+                            <p>保健品只能起到辅助保健作用，不能替代药物治疗。购买前要了解产品成分和适用人群。</p>
+                        </div>
+                    </li>
+                    <li class="tips-item">
+                        <div class="tips-icon">5</div>
+                        <div class="tips-content">
+                            <h4>使用AI识别工具</h4>
+                            <p>遇到不确定的养生信息，可以使用我们的AI识别工具进行验证，帮助您辨别真伪。</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="about.html">关于我们</a>
+                <a href="#">联系方式</a>
+                <a href="#">隐私政策</a>
+                <a href="#">版权声明</a>
+            </div>
+            <p class="footer-copyright">© 2024 中医养生平台 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const checkBtn = document.getElementById('checkBtn');
+            const rumorInput = document.getElementById('rumorInput');
+            const resultContainer = document.getElementById('resultContainer');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            checkBtn.addEventListener('click', function() {
+                const text = rumorInput.value.trim();
+                if (!text) {
+                    alert('请输入要识别的内容');
+                    return;
+                }
+
+                checkBtn.textContent = '🔍 识别中...';
+                checkBtn.disabled = true;
+
+                setTimeout(function() {
+                    resultContainer.style.display = 'block';
+                    checkBtn.textContent = '🔍 开始识别';
+                    checkBtn.disabled = false;
+                    
+                    resultContainer.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
