@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 草本数智</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background-color: #f7f5f0;
+            color: #2c2c2c;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-bottom: 2px solid #8b7355;
+            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
+            transition: all 0.3s ease;
+            animation: navSlideDown 1s ease-out;
+        }
+
+        .nav-wrapper.scrolled {
+            height: 60px;
+        }
+
+        @keyframes navSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 120px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled .nav-container {
+            height: 60px;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8b7355;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #5a4a3a;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #8b7355;
+            background-color: rgba(139, 115, 85, 0.1);
+        }
+
+        .nav-menu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #8b7355;
+        }
+
+        .main-content {
+            margin-top: 140px;
+            padding-bottom: 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border-bottom: 2px solid #c9b896;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 15px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #6b5d4f;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: #fff;
+            border: 2px solid #c9b896;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .section-content {
+            font-size: 18px;
+            color: #5a4a3a;
+            line-height: 2;
+            text-align: justify;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(139, 115, 85, 0.15);
+        }
+
+        .mission-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+        }
+
+        .mission-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 15px;
+        }
+
+        .mission-desc {
+            font-size: 16px;
+            color: #5a4a3a;
+            line-height: 1.8;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.15);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 8px;
+        }
+
+        .member-role {
+            font-size: 14px;
+            color: #6b5d4f;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+        }
+
+        .contact-label {
+            font-size: 16px;
+            color: #6b5d4f;
+            margin-bottom: 10px;
+        }
+
+        .contact-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b7355;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-top: 2px solid #8b7355;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #5a4a3a;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #8b7355;
+        }
+
+        .footer-copyright {
+            color: #6b5d4f;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-wrapper" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
+                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
+                </svg>
+                <span>草本数智</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html" class="active">关于我们</a></li>
+                <li><a href="news.html">健康资讯</a></li>
+                <li><a href="health.html">个人健康管理</a></li>
+                <li><a href="family.html">子女父母健康看板</a></li>
+                <li><a href="profile.html">我的</a></li>
+                <li><a href="vip.html">会员</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="container">
+                <h1 class="page-title">关于我们</h1>
+                <p class="page-subtitle">传承中医智慧，守护银发健康</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title">平台简介</h2>
+                <div class="section-content">
+                    <p>中医养生平台是专注于银发经济的智能健康管理服务平台。我们致力于将传统中医养生智慧与现代人工智能技术相结合，为广大中老年用户提供专业、便捷、个性化的健康管理服务。</p>
+                    <br>
+                    <p>平台依托权威中医专家团队，结合AI智能分析技术，为用户提供体质辨识、健康评估、养生方案定制等全方位服务。我们深知中老年群体的健康需求，因此在产品设计上特别注重适老化体验，让每一位用户都能轻松使用。</p>
+                    <br>
+                    <p>同时，我们积极承担社会责任，通过防骗科普、养生谣言识别等功能，帮助中老年用户识别虚假养生信息，守护健康与财产安全。</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">我们的使命</h2>
+                <div class="mission-grid">
+                    <div class="mission-card">
+                        <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M50 25 L50 50 L70 65" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <h3 class="mission-title">传承创新</h3>
+                        <p class="mission-desc">传承千年中医智慧，融合现代科技手段，让传统养生焕发新生</p>
+                    </div>
+                    <div class="mission-card">
+                        <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 65 L30 75 L35 55 L20 40 L40 40 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <h3 class="mission-title">用心服务</h3>
+                        <p class="mission-desc">以用户需求为中心，提供贴心、专业、个性化的健康管理服务</p>
+                    </div>
+                    <div class="mission-card">
+                        <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 20 C65 20 75 30 75 45 C75 60 50 80 50 80 C50 80 25 60 25 45 C25 30 35 20 50 20" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <h3 class="mission-title">守护健康</h3>
+                        <p class="mission-desc">帮助中老年用户科学养生，提高生活质量，享受幸福晚年</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">专家团队</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">张</div>
+                        <h3 class="member-name">张教授</h3>
+                        <p class="member-role">首席中医专家</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">李</div>
+                        <h3 class="member-name">李主任</h3>
+                        <p class="member-role">养生调理专家</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">王</div>
+                        <h3 class="member-name">王医师</h3>
+                        <p class="member-role">慢病管理专家</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">陈</div>
+                        <h3 class="member-name">陈博士</h3>
+                        <p class="member-role">AI技术负责人</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">联系我们</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="20" y="30" width="60" height="40" rx="5" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M20 35 L50 55 L80 35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <p class="contact-label">电子邮箱</p>
+                        <p class="contact-value">contact@tcm-health.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 35 Q50 25 70 35 L70 65 Q50 75 30 65 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <circle cx="50" cy="50" r="8" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <p class="contact-label">客服热线</p>
+                        <p class="contact-value">400-888-8888</p>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 20 L80 40 L80 80 L20 80 L20 40 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M35 80 L35 55 L65 55 L65 80" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <p class="contact-label">公司地址</p>
+                        <p class="contact-value">北京市朝阳区健康大厦</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="about.html">关于我们</a>
+                <a href="#">联系方式</a>
+                <a href="#">隐私政策</a>
+                <a href="#">版权声明</a>
+            </div>
+            <p class="footer-copyright">© 2024 中医养生平台 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
