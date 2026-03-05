@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI中医体质辨识 - 草本数智</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background-color: #f7f5f0;
+            color: #2c2c2c;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-bottom: 2px solid #8b7355;
+            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
+            transition: all 0.3s ease;
+            animation: navSlideDown 1s ease-out;
+        }
+
+        .nav-wrapper.scrolled {
+            height: 60px;
+        }
+
+        @keyframes navSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 120px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled .nav-container {
+            height: 60px;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8b7355;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #5a4a3a;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #8b7355;
+            background-color: rgba(139, 115, 85, 0.1);
+        }
+
+        .nav-menu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #8b7355;
+        }
+
+        .main-content {
+            margin-top: 140px;
+            padding-bottom: 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border-bottom: 2px solid #c9b896;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 15px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #6b5d4f;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: #fff;
+            border: 2px solid #c9b896;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 18px;
+            color: #5a4a3a;
+            line-height: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .constitution-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 2px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(139, 115, 85, 0.15);
+            border-color: #8b7355;
+        }
+
+        .type-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: #8b7355;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+        }
+
+        .type-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 10px;
+        }
+
+        .type-desc {
+            font-size: 14px;
+            color: #6b5d4f;
+            line-height: 1.6;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 2px solid #d4c4a8;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 10px;
+            background: #e8e0d0;
+            border-radius: 5px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b7355 0%, #a08060 100%);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            width: 20%;
+        }
+
+        .progress-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #8b7355;
+        }
+
+        .question-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: #8b7355;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 25px;
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            margin-bottom: 15px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #faf8f5;
+            border: 2px solid #d4c4a8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-label:hover {
+            background: #f5f1e8;
+            border-color: #8b7355;
+        }
+
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            accent-color: #8b7355;
+        }
+
+        .option-text {
+            font-size: 16px;
+            color: #5a4a3a;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .quiz-btn {
+            padding: 15px 40px;
+            border: 2px solid #8b7355;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+        }
+
+        .quiz-btn.prev {
+            background: transparent;
+            color: #8b7355;
+        }
+
+        .quiz-btn.prev:hover {
+            background: rgba(139, 115, 85, 0.1);
+        }
+
+        .quiz-btn.next {
+            background: #8b7355;
+            color: #fff;
+        }
+
+        .quiz-btn.next:hover {
+            background: #7a6248;
+        }
+
+        .result-container {
+            display: none;
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 2px solid #d4c4a8;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .result-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fff;
+        }
+
+        .result-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 10px;
+        }
+
+        .result-subtitle {
+            font-size: 18px;
+            color: #6b5d4f;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .result-card {
+            background: #fff;
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .result-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .result-card li {
+            padding: 10px 0;
+            font-size: 16px;
+            color: #5a4a3a;
+            border-bottom: 1px solid #f0ebe3;
+        }
+
+        .result-card li:last-child {
+            border-bottom: none;
+        }
+
+        .result-card li::before {
+            content: '•';
+            color: #8b7355;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            background: #8b7355;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+        }
+
+        .action-btn:hover {
+            background: #7a6248;
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: #8b7355;
+            border: 2px solid #8b7355;
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(139, 115, 85, 0.1);
+        }
+
+        /* 表单样式 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            padding: 15px;
+            border: 2px solid #d4c4a8;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background: #fff;
+            color: #5a4a3a;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b7355;
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d4c4a8;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background: #fff;
+            color: #5a4a3a;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #8b7355;
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+
+        .form-hint {
+            font-size: 14px;
+            color: #6b5d4f;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* 症状标签 */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .symptom-tag {
+            padding: 8px 16px;
+            background: #f5f1e8;
+            border: 1px solid #d4c4a8;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #5a4a3a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .symptom-tag:hover {
+            background: #8b7355;
+            color: #fff;
+            border-color: #8b7355;
+        }
+
+        /* 信息确认页 */
+        .review-section {
+            background: #faf8f5;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #d4c4a8;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-weight: 700;
+            color: #5a4a3a;
+        }
+
+        .review-value {
+            color: #6b5d4f;
+        }
+
+        /* 加载动画 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form-step {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-top: 2px solid #8b7355;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #5a4a3a;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #8b7355;
+        }
+
+        .footer-copyright {
+            color: #6b5d4f;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .constitution-types {
+                grid-template-columns: 1fr;
+            }
+
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .options-horizontal {
+                flex-direction: column;
+            }
+
+            .options-horizontal .option-label {
+                min-width: auto;
+            }
+
+            .review-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-wrapper" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
+                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
+                </svg>
+                <span>草本数智</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html">关于我们</a></li>
+                <li><a href="news.html">健康资讯</a></li>
+                <li><a href="health.html">个人健康管理</a></li>
+                <li><a href="family.html">子女父母健康看板</a></li>
+                <li><a href="profile.html">我的</a></li>
+                <li><a href="vip.html">会员</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="container">
+                <h1 class="page-title">AI中医体质辨识</h1>
+                <p class="page-subtitle">科学评估，精准分析，个性化养生方案</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title">了解九种体质</h2>
+                <p class="intro-text">中医将人体体质分为九种基本类型：平和质、气虚质、阳虚质、阴虚质、痰湿质、湿热质、血瘀质、气郁质、特禀质。了解自己的体质类型，有助于制定个性化的养生方案。</p>
+                <div class="constitution-types">
+                    <div class="type-card">
+                        <div class="type-icon">☯️</div>
+                        <h3 class="type-name">平和质</h3>
+                        <p class="type-desc">阴阳气血调和，体态适中，面色红润，精力充沛</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">💨</div>
+                        <h3 class="type-name">气虚质</h3>
+                        <p class="type-desc">元气不足，易疲乏，气短懒言，易出汗</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">❄️</div>
+                        <h3 class="type-name">阳虚质</h3>
+                        <p class="type-desc">阳气不足，畏寒怕冷，手足不温，喜热饮食</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🔥</div>
+                        <h3 class="type-name">阴虚质</h3>
+                        <p class="type-desc">阴液亏少，口燥咽干，手足心热，体形偏瘦</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">💧</div>
+                        <h3 class="type-name">痰湿质</h3>
+                        <p class="type-desc">痰湿凝聚，形体肥胖，腹部肥满，口黏苔腻</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🌡️</div>
+                        <h3 class="type-name">湿热质</h3>
+                        <p class="type-desc">湿热内蕴，面垢油光，口苦苔黄腻，易生痤疮</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🩸</div>
+                        <h3 class="type-name">血瘀质</h3>
+                        <p class="type-desc">血行不畅，肤色晦暗，舌质紫黯，易现瘀斑</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">😔</div>
+                        <h3 class="type-name">气郁质</h3>
+                        <p class="type-desc">气机郁滞，神情抑郁，忧虑脆弱，烦闷不乐</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🌸</div>
+                        <h3 class="type-name">特禀质</h3>
+                        <p class="type-desc">先天失常，生理缺陷，过敏反应，遗传疾病</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 体质测评表单 -->
+            <section class="section" id="assessmentSection">
+                <h2 class="section-title">开始体质测评</h2>
+                
+                <!-- 步骤指示器 -->
+                <div class="quiz-progress" id="stepIndicator">
+                    <span class="progress-text">步骤 <span id="currentStep">1</span> / 4</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 25%;"></div>
+                    </div>
+                    <span class="progress-text" id="stepName">基本信息</span>
+                </div>
+
+                <!-- 步骤1：基本信息 -->
+                <div class="form-step" id="step1">
+                    <div class="question-container">
+                        <h3 class="question-text">请填写您的基本信息</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">姓名</label>
+                                <input type="text" id="userName" class="form-input" placeholder="请输入您的姓名" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">性别</label>
+                                <select id="userGender" class="form-input" required onchange="ConstitutionModule.toggleMenstrualField()">
+                                    <option value="">请选择</option>
+                                    <option value="male">男</option>
+                                    <option value="female">女</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">年龄</label>
+                                <input type="number" id="userAge" class="form-input" placeholder="请输入年龄" min="1" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">身高 (cm)</label>
+                                <input type="number" id="userHeight" class="form-input" placeholder="请输入身高" min="50" max="250" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">体重 (kg)</label>
+                                <input type="number" id="userWeight" class="form-input" placeholder="请输入体重" min="20" max="200" step="0.1" required>
+                            </div>
+                            <div class="form-group" id="menstrualGroup" style="display: none;">
+                                <label class="form-label">生理期情况（女性选填）</label>
+                                <select id="userMenstrual" class="form-input">
+                                    <option value="">请选择</option>
+                                    <option value="normal">周期正常</option>
+                                    <option value="irregular">周期不规律</option>
+                                    <option value="menopause">已绝经</option>
+                                    <option value="pregnant">孕期</option>
+                                    <option value="none">暂无/不适用</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quiz-buttons">
+                        <button class="quiz-btn prev" disabled>上一步</button>
+                        <button class="quiz-btn next" onclick="ConstitutionModule.nextStep()">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤2：基础问题 -->
+                <div class="form-step" id="step2" style="display: none;">
+                    <div class="question-container" id="basicQuestionsContainer">
+                        <!-- 问题将通过JS动态生成 -->
+                    </div>
+                    <div class="quiz-buttons">
+                        <button class="quiz-btn prev" onclick="ConstitutionModule.prevStep()">上一步</button>
+                        <button class="quiz-btn next" onclick="ConstitutionModule.nextStep()">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤3：症状描述 -->
+                <div class="form-step" id="step3" style="display: none;">
+                    <div class="question-container">
+                        <h3 class="question-text">请描述您目前的症状（选填）</h3>
+                        <p class="form-hint">请详细描述您目前的身体状况、不适症状、持续时间等，有助于AI更准确地分析您的体质</p>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <textarea id="symptomDescription" class="form-textarea" rows="6" placeholder="例如：最近经常感到疲劳，晚上睡眠质量不好，容易口干，大便偏干..."></textarea>
+                        </div>
+                        <div class="symptom-tags" style="margin-top: 20px;">
+                            <p class="form-hint">常见症状（点击快速添加）：</p>
+                            <div class="tag-container" id="symptomTags">
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('容易疲劳')">容易疲劳</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('失眠多梦')">失眠多梦</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('口干舌燥')">口干舌燥</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('手脚冰凉')">手脚冰凉</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('容易出汗')">容易出汗</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('食欲不振')">食欲不振</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('腹胀')">腹胀</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('便秘')">便秘</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('腹泻')">腹泻</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('头晕')">头晕</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('头痛')">头痛</span>
+                                <span class="symptom-tag" onclick="ConstitutionModule.addSymptom('胸闷')">胸闷</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quiz-buttons">
+                        <button class="quiz-btn prev" onclick="ConstitutionModule.prevStep()">上一步</button>
+                        <button class="quiz-btn next" onclick="ConstitutionModule.nextStep()">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤4：确认提交 -->
+                <div class="form-step" id="step4" style="display: none;">
+                    <div class="question-container">
+                        <h3 class="question-text">确认信息</h3>
+                        <div class="review-section" id="reviewSection">
+                            <!-- 信息摘要将通过JS生成 -->
+                        </div>
+                    </div>
+                    <div class="quiz-buttons">
+                        <button class="quiz-btn prev" onclick="ConstitutionModule.prevStep()">上一步</button>
+                        <button class="quiz-btn next" onclick="ConstitutionModule.submitAssessment()" id="submitBtn">提交分析</button>
+                    </div>
+                </div>
+
+                <!-- 加载中 -->
+                <div class="form-step" id="loadingStep" style="display: none;">
+                    <div class="question-container" style="text-align: center; padding: 60px;">
+                        <div class="loading-spinner" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #8b7355; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 30px;"></div>
+                        <h3 class="question-text">AI正在分析您的体质...</h3>
+                        <p class="form-hint">请稍候，正在生成个性化养生方案</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 分析结果 -->
+            <section class="section" id="resultSection" style="display: none;">
+                <div class="result-container" id="resultContainer">
+                    <div class="result-header">
+                        <div class="result-icon" id="resultIcon">📋</div>
+                        <h2 class="result-title" id="resultTitle">您的体质类型：平和质</h2>
+                        <p class="result-subtitle" id="resultSubtitle">恭喜您！您的身体状况良好，继续保持</p>
+                    </div>
+
+                    <div class="result-details" id="resultDetails">
+                        <!-- 结果详情将通过JS动态生成 -->
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="ConstitutionModule.restartAssessment()">重新测评</button>
+                        <button class="action-btn secondary" onclick="ConstitutionModule.saveToHealth()">保存到健康档案</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="about.html">关于我们</a>
+                <a href="#">联系方式</a>
+                <a href="#">隐私政策</a>
+                <a href="#">版权声明</a>
+            </div>
+            <p class="footer-copyright">© 2024 中医养生平台 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // 后端API配置
+        // ============================================
+        const API_BASE_URL = 'http://localhost:8080/api';
+
+        // ============================================
+        // 体质辨识模块
+        // ============================================
+        const ConstitutionModule = {
+            currentStep: 1,
+            totalSteps: 4,
+            
+            // 基础问题列表
+            basicQuestions: [
+                { id: 'q1', text: "您平时容易感到疲乏无力吗？", category: "气虚" },
+                { id: 'q2', text: "您容易怕冷，手脚发凉吗？", category: "阳虚" },
+                { id: 'q3', text: "您容易口干舌燥，皮肤干燥吗？", category: "阴虚" },
+                { id: 'q4', text: "您体型偏胖，腹部肥满吗？", category: "痰湿" },
+                { id: 'q5', text: "您面色晦暗，容易出现瘀斑吗？", category: "血瘀" },
+                { id: 'q6', text: "您容易感到胸闷或情绪低落吗？", category: "气郁" },
+                { id: 'q7', text: "您容易过敏或皮肤瘙痒吗？", category: "特禀" }
+            ],
+
+            // 用户答案存储
+            userAnswers: {},
+
+            // 初始化
+            init() {
+                this.renderBasicQuestions();
+                this.updateStepIndicator();
+            },
+
+            // 渲染基础问题
+            renderBasicQuestions() {
+                const container = document.getElementById('basicQuestionsContainer');
+                if (!container) return;
+
+                container.innerHTML = `
+                    <h3 class="question-text">请回答以下问题（单选）</h3>
+                    <div class="basic-questions-list">
+                        ${this.basicQuestions.map((q, index) => `
+                            <div class="question-item" style="margin-bottom: 25px; padding: 20px; background: #fff; border-radius: 8px; border: 1px solid #d4c4a8;">
+                                <p class="question-number" style="margin-bottom: 10px;">问题 ${index + 1}</p>
+                                <h4 style="font-size: 16px; color: #5a4a3a; margin-bottom: 15px;">${q.text}</h4>
+                                <div class="options-horizontal" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    ${[1, 2, 3, 4, 5].map(val => `
+                                        <label class="option-label" style="flex: 1; min-width: 100px; justify-content: center; padding: 10px;">
+                                            <input type="radio" name="${q.id}" value="${val}" class="option-radio" 
+                                                onchange="ConstitutionModule.saveAnswer('${q.id}', ${val})"
+                                                ${this.userAnswers[q.id] == val ? 'checked' : ''}>
+                                            <span class="option-text" style="font-size: 14px;">${this.getOptionText(val)}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            },
+
+            getOptionText(value) {
+                const texts = {
+                    1: '没有',
+                    2: '很少',
+                    3: '有时',
+                    4: '经常',
+                    5: '总是'
+                };
+                return texts[value] || value;
+            },
+
+            // 保存答案
+            saveAnswer(questionId, value) {
+                this.userAnswers[questionId] = value;
+            },
+
+            // 切换生理期字段显示
+            toggleMenstrualField() {
+                const gender = document.getElementById('userGender')?.value;
+                const menstrualGroup = document.getElementById('menstrualGroup');
+                if (menstrualGroup) {
+                    menstrualGroup.style.display = gender === 'female' ? 'block' : 'none';
+                }
+            },
+
+            // 添加症状标签
+            addSymptom(symptom) {
+                const textarea = document.getElementById('symptomDescription');
+                if (textarea) {
+                    const currentText = textarea.value;
+                    if (currentText && !currentText.includes(symptom)) {
+                        textarea.value = currentText + (currentText.endsWith('，') || currentText.endsWith('。') || currentText === '' ? '' : '，') + symptom;
+                    } else if (!currentText) {
+                        textarea.value = symptom;
+                    }
+                }
+            },
+
+            // 下一步
+            nextStep() {
+                if (this.currentStep < this.totalSteps) {
+                    // 验证当前步骤
+                    if (!this.validateCurrentStep()) {
+                        return;
+                    }
+                    
+                    this.currentStep++;
+                    this.showStep(this.currentStep);
+                    this.updateStepIndicator();
+                    
+                    // 如果是确认页，生成信息摘要
+                    if (this.currentStep === 4) {
+                        this.generateReview();
+                    }
+                }
+            },
+
+            // 上一步
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep--;
+                    this.showStep(this.currentStep);
+                    this.updateStepIndicator();
+                }
+            },
+
+            // 显示指定步骤
+            showStep(step) {
+                // 隐藏所有步骤
+                for (let i = 1; i <= 4; i++) {
+                    const stepEl = document.getElementById(`step${i}`);
+                    if (stepEl) stepEl.style.display = 'none';
+                }
+                
+                // 显示当前步骤
+                const currentStepEl = document.getElementById(`step${step}`);
+                if (currentStepEl) currentStepEl.style.display = 'block';
+            },
+
+            // 更新步骤指示器
+            updateStepIndicator() {
+                const currentStepEl = document.getElementById('currentStep');
+                const progressFill = document.getElementById('progressFill');
+                const stepName = document.getElementById('stepName');
+                
+                const stepNames = ['基本信息', '基础问题', '症状描述', '确认提交'];
+                
+                if (currentStepEl) currentStepEl.textContent = this.currentStep;
+                if (progressFill) progressFill.style.width = `${(this.currentStep / this.totalSteps) * 100}%`;
+                if (stepName) stepName.textContent = stepNames[this.currentStep - 1] || '';
+            },
+
+            // 验证当前步骤
+            validateCurrentStep() {
+                if (this.currentStep === 1) {
+                    const required = ['userName', 'userGender', 'userAge', 'userHeight', 'userWeight'];
+                    for (const id of required) {
+                        const el = document.getElementById(id);
+                        if (!el || !el.value.trim()) {
+                            alert('请填写所有必填项');
+                            el?.focus();
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            },
+
+            // 生成信息摘要
+            generateReview() {
+                const reviewSection = document.getElementById('reviewSection');
+                if (!reviewSection) return;
+
+                const name = document.getElementById('userName')?.value || '';
+                const gender = document.getElementById('userGender')?.value === 'male' ? '男' : '女';
+                const age = document.getElementById('userAge')?.value || '';
+                const height = document.getElementById('userHeight')?.value || '';
+                const weight = document.getElementById('userWeight')?.value || '';
+                const menstrual = document.getElementById('userMenstrual')?.value || '';
+                const symptoms = document.getElementById('symptomDescription')?.value || '无';
+
+                const menstrualText = {
+                    'normal': '周期正常',
+                    'irregular': '周期不规律',
+                    'menopause': '已绝经',
+                    'pregnant': '孕期',
+                    'none': '暂无/不适用'
+                };
+
+                reviewSection.innerHTML = `
+                    <div class="review-item">
+                        <span class="review-label">姓名</span>
+                        <span class="review-value">${name}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">性别</span>
+                        <span class="review-value">${gender}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">年龄</span>
+                        <span class="review-value">${age} 岁</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">身高</span>
+                        <span class="review-value">${height} cm</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">体重</span>
+                        <span class="review-value">${weight} kg</span>
+                    </div>
+                    ${gender === '女' && menstrual ? `
+                    <div class="review-item">
+                        <span class="review-label">生理期情况</span>
+                        <span class="review-value">${menstrualText[menstrual] || menstrual}</span>
+                    </div>
+                    ` : ''}
+                    <div class="review-item" style="flex-direction: column; align-items: flex-start;">
+                        <span class="review-label" style="margin-bottom: 8px;">症状描述</span>
+                        <span class="review-value" style="line-height: 1.6;">${symptoms}</span>
+                    </div>
+                    <div class="review-item" style="flex-direction: column; align-items: flex-start;">
+                        <span class="review-label" style="margin-bottom: 8px;">基础问题回答</span>
+                        <span class="review-value">已回答 ${Object.keys(this.userAnswers).length} / ${this.basicQuestions.length} 题</span>
+                    </div>
+                `;
+            },
+
+            // 提交测评
+            async submitAssessment() {
+                // 收集所有数据
+                const assessmentData = this.collectAssessmentData();
+                
+                // 显示加载中
+                document.getElementById('step4').style.display = 'none';
+                document.getElementById('loadingStep').style.display = 'block';
+                document.getElementById('stepIndicator').style.display = 'none';
+
+                try {
+                    // 发送到后端AI分析
+                    const response = await fetch(`${API_BASE_URL}/ai/constitution-analysis`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.getToken()}`
+                        },
+                        body: JSON.stringify(assessmentData)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayResult(result);
+                    } else {
+                        // 使用模拟结果
+                        this.displayMockResult(assessmentData);
+                    }
+                } catch (error) {
+                    console.error('AI分析失败:', error);
+                    this.displayMockResult(assessmentData);
+                }
+
+                // 保存到localStorage
+                localStorage.setItem('constitutionData', JSON.stringify(assessmentData));
+            },
+
+            // 收集测评数据
+            collectAssessmentData() {
+                const name = document.getElementById('userName')?.value || '';
+                const gender = document.getElementById('userGender')?.value || '';
+                const age = parseInt(document.getElementById('userAge')?.value) || 0;
+                const height = parseFloat(document.getElementById('userHeight')?.value) || 0;
+                const weight = parseFloat(document.getElementById('userWeight')?.value) || 0;
+                const menstrual = document.getElementById('userMenstrual')?.value || '';
+                const symptoms = document.getElementById('symptomDescription')?.value || '';
+
+                // 计算BMI
+                const bmi = height > 0 ? (weight / ((height / 100) ** 2)).toFixed(1) : 0;
+
+                return {
+                    userInfo: {
+                        name,
+                        gender,
+                        age,
+                        height,
+                        weight,
+                        bmi: parseFloat(bmi),
+                        menstrual: gender === 'female' ? menstrual : null
+                    },
+                    basicAnswers: this.userAnswers,
+                    symptoms: symptoms,
+                    submitTime: new Date().toISOString()
+                };
+            },
+
+            // 显示分析结果
+            displayResult(result) {
+                document.getElementById('assessmentSection').style.display = 'none';
+                document.getElementById('resultSection').style.display = 'block';
+
+                // 更新结果标题
+                document.getElementById('resultIcon').textContent = result.icon || '📋';
+                document.getElementById('resultTitle').textContent = `您的体质类型：${result.constitutionType || '平和质'}`;
+                document.getElementById('resultSubtitle').textContent = result.description || '根据您的测评结果生成';
+
+                // 渲染详细建议
+                const detailsContainer = document.getElementById('resultDetails');
+                if (detailsContainer && result.advice) {
+                    detailsContainer.innerHTML = `
+                        <div class="result-card">
+                            <h3>🍎 饮食建议</h3>
+                            <ul>${result.advice.diet?.map(item => `<li>${item}</li>`).join('') || '<li>建议均衡饮食</li>'}</ul>
+                        </div>
+                        <div class="result-card">
+                            <h3>🏃 运动建议</h3>
+                            <ul>${result.advice.exercise?.map(item => `<li>${item}</li>`).join('') || '<li>建议适量运动</li>'}</ul>
+                        </div>
+                        <div class="result-card">
+                            <h3>😴 起居建议</h3>
+                            <ul>${result.advice.lifestyle?.map(item => `<li>${item}</li>`).join('') || '<li>建议规律作息</li>'}</ul>
+                        </div>
+                        <div class="result-card">
+                            <h3>💆 穴位保健</h3>
+                            <ul>${result.advice.acupressure?.map(item => `<li>${item}</li>`).join('') || '<li>建议按摩保健穴位</li>'}</ul>
+                        </div>
+                    `;
+                }
+
+                // 保存结果到localStorage
+                localStorage.setItem('constitutionResult', JSON.stringify(result));
+            },
+
+            // 显示模拟结果（后端不可用时）
+            displayMockResult(data) {
+                // 根据答案简单判断体质类型
+                let constitutionType = '平和质';
+                let description = '您的身体状况良好，继续保持健康的生活方式。';
+                
+                // 简单的判断逻辑
+                const answers = Object.values(data.basicAnswers);
+                const avgScore = answers.reduce((a, b) => a + b, 0) / answers.length;
+                
+                if (avgScore > 3.5) {
+                    constitutionType = '气虚质';
+                    description = '您可能存在气虚的情况，建议注意休息，适当进补。';
+                } else if (avgScore > 2.5) {
+                    constitutionType = '阳虚质';
+                    description = '您可能存在阳虚的情况，建议注意保暖，避免寒凉。';
+                }
+
+                const mockResult = {
+                    icon: '📋',
+                    constitutionType: constitutionType,
+                    description: description,
+                    advice: {
+                        diet: ['饮食多样化，营养均衡', '多吃新鲜蔬菜水果', '适量摄入优质蛋白质', '少食油腻、辛辣食物'],
+                        exercise: ['坚持适量有氧运动', '推荐快走、太极拳', '每周运动3-5次', '每次30-60分钟'],
+                        lifestyle: ['早睡早起，规律作息', '保证7-8小时睡眠', '注意劳逸结合', '保持心情愉悦'],
+                        acupressure: ['足三里：健脾和胃', '关元穴：培元固本', '涌泉穴：滋阴补肾', '每日按摩10-15分钟']
+                    }
+                };
+
+                this.displayResult(mockResult);
+            },
+
+            // 重新测评
+            restartAssessment() {
+                this.currentStep = 1;
+                this.userAnswers = {};
+                
+                // 重置表单
+                document.getElementById('userName').value = '';
+                document.getElementById('userGender').value = '';
+                document.getElementById('userAge').value = '';
+                document.getElementById('userHeight').value = '';
+                document.getElementById('userWeight').value = '';
+                document.getElementById('userMenstrual').value = '';
+                document.getElementById('symptomDescription').value = '';
+                
+                // 显示测评区域
+                document.getElementById('resultSection').style.display = 'none';
+                document.getElementById('assessmentSection').style.display = 'block';
+                document.getElementById('stepIndicator').style.display = 'flex';
+                
+                this.showStep(1);
+                this.updateStepIndicator();
+                this.renderBasicQuestions();
+            },
+
+            // 保存到健康档案
+            saveToHealth() {
+                const result = JSON.parse(localStorage.getItem('constitutionResult') || '{}');
+                const data = JSON.parse(localStorage.getItem('constitutionData') || '{}');
+                
+                // 合并数据
+                const healthData = {
+                    ...data,
+                    constitutionType: result.constitutionType,
+                    aiAdvice: result.description,
+                    timestamp: new Date().toISOString()
+                };
+
+                // 保存到localStorage
+                localStorage.setItem('healthData', JSON.stringify(healthData));
+                
+                alert('已保存到健康档案！');
+                
+                // 跳转到健康管理页面
+                window.location.href = 'health.html';
+            },
+
+            getToken() {
+                return localStorage.getItem('token') || '';
+            }
+        };
+
+        // ============================================
+        // 页面初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 初始化体质辨识模块
+            ConstitutionModule.init();
+        });
+    </script>
+</body>
+</html>

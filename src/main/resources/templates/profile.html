@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 - 草本数智</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background-color: #f7f5f0;
+            color: #2c2c2c;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-bottom: 2px solid #8b7355;
+            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
+            transition: all 0.3s ease;
+            animation: navSlideDown 1s ease-out;
+        }
+
+        .nav-wrapper.scrolled {
+            height: 60px;
+        }
+
+        @keyframes navSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 120px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled .nav-container {
+            height: 60px;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8b7355;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #5a4a3a;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #8b7355;
+            background-color: rgba(139, 115, 85, 0.1);
+        }
+
+        .nav-menu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #8b7355;
+        }
+
+        .main-content {
+            margin-top: 140px;
+            padding-bottom: 60px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border-bottom: 2px solid #c9b896;
+            padding: 50px 0;
+            margin-bottom: 50px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fff;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+        }
+
+        .profile-details h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 10px;
+        }
+
+        .profile-details p {
+            font-size: 16px;
+            color: #6b5d4f;
+            margin-bottom: 5px;
+        }
+
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: #ffd700;
+            color: #5a4a3a;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: #fff;
+            border: 2px solid #c9b896;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 25px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.15);
+        }
+
+        .menu-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+        }
+
+        .menu-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #5a4a3a;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
+            border: 1px solid #d4c4a8;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #8b7355;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b5d4f;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+            background: #faf8f5;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b7355;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .save-btn {
+            padding: 15px 40px;
+            background: #8b7355;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Serif SC', '思源宋体', serif;
+        }
+
+        .save-btn:hover {
+            background: #7a6248;
+        }
+
+        .history-list {
+            list-style: none;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #d4c4a8;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-icon {
+            width: 50px;
+            height: 50px;
+            background: #8b7355;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .history-content {
+            flex-grow: 1;
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5a4a3a;
+            margin-bottom: 5px;
+        }
+
+        .history-time {
+            font-size: 14px;
+            color: #6b5d4f;
+        }
+
+        .history-status {
+            padding: 8px 20px;
+            background: #4caf50;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 20px;
+        }
+
+        /* 加载状态 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(247, 245, 240, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0ebe3;
+            border-top: 4px solid #8b7355;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 消息提示 */
+        .toast {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: #4caf50;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 16px;
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast.error {
+            background: #f44336;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
+            border-top: 2px solid #8b7355;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #5a4a3a;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #8b7355;
+        }
+
+        .footer-copyright {
+            color: #6b5d4f;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-wrapper" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
+                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
+                </svg>
+                <span>草本数智</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html">关于我们</a></li>
+                <li><a href="news.html">健康资讯</a></li>
+                <li><a href="health.html">个人健康管理</a></li>
+                <li><a href="family.html">子女父母健康看板</a></li>
+                <li><a href="profile.html" class="active">我的</a></li>
+                <li><a href="vip.html">会员</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="profile-header">
+            <div class="container">
+                <div class="profile-info">
+                    <div class="profile-avatar" id="profileAvatar">👤</div>
+                    <div class="profile-details">
+                        <h1 id="profileName">加载中...</h1>
+                        <p id="profilePhone">手机号：--</p>
+                        <p id="profileRegTime">注册时间：--</p>
+                        <span class="profile-badge" id="profileBadge">
+                            <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 10 L60 35 L85 35 L65 50 L75 75 L50 60 L25 75 L35 50 L15 35 L40 35 Z" fill="currentColor"/>
+                            </svg>
+                            普通会员
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title">功能菜单</h2>
+                <div class="menu-grid">
+                    <a href="health.html" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 80 C50 80 20 55 20 35 C20 25 30 15 40 15 C45 15 50 20 50 25 C50 20 55 15 60 15 C70 15 80 25 80 35 C80 55 50 80 50 80" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">健康档案</span>
+                    </a>
+                    <a href="family.html" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="35" cy="35" r="15" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <circle cx="65" cy="35" r="15" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M20 80 Q50 60 80 80" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">家庭管理</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 50 L45 65 L70 35" stroke="#8b7355" stroke-width="4" fill="none"/>
+                            <circle cx="50" cy="50" r="35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">体质报告</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 30 L30 70 L70 70" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M40 50 L50 60 L70 35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">健康报告</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 65 L30 75 L35 55 L20 40 L40 40 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">我的收藏</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 35 L30 65 Q50 75 70 65 L70 35 Q50 45 30 35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">消息通知</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="40" r="20" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M25 85 Q50 70 75 85" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">账号设置</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <svg class="menu-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 50 L20 50 L50 20 L80 50 L70 50" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M35 50 L35 75 L65 75 L65 50" stroke="#8b7355" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span class="menu-label">帮助中心</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">我的数据</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <p class="stat-value" id="statCheckIn">--</p>
+                        <p class="stat-label">连续打卡天数</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-value" id="statLearning">--</p>
+                        <p class="stat-label">健康知识学习</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-value" id="statAssessment">--</p>
+                        <p class="stat-label">体质测评次数</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-value" id="statRecords">--</p>
+                        <p class="stat-label">健康数据记录</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">个人资料</h2>
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">姓名</label>
+                            <input type="text" class="form-input" id="userName" name="name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">性别</label>
+                            <select class="form-input" id="userGender" name="gender">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">年龄</label>
+                            <input type="number" class="form-input" id="userAge" name="age" value="" min="1" max="120">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">手机号</label>
+                            <input type="tel" class="form-input" id="userPhone" name="phone" value="" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">身高(cm)</label>
+                            <input type="number" class="form-input" id="userHeight" name="height" value="" min="50" max="250">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">体重(kg)</label>
+                            <input type="number" class="form-input" id="userWeight" name="weight" value="" min="20" max="200" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">常住地址</label>
+                        <input type="text" class="form-input" id="userAddress" name="address" value="">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">紧急联系人姓名</label>
+                            <input type="text" class="form-input" id="emergencyName" name="emergencyName" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">紧急联系人电话</label>
+                            <input type="tel" class="form-input" id="emergencyPhone" name="emergencyPhone" value="">
+                        </div>
+                    </div>
+                    <button type="submit" class="save-btn" id="saveBtn">保存修改</button>
+                </form>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">最近活动</h2>
+                <ul class="history-list" id="activityList">
+                    <li class="history-item">
+                        <div class="history-content">
+                            <p class="history-title">加载中...</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="about.html">关于我们</a>
+                <a href="#">联系方式</a>
+                <a href="#">隐私政策</a>
+                <a href="#">版权声明</a>
+            </div>
+            <p class="footer-copyright">© 2024 中医养生平台 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // 后端API配置
+        // ============================================
+        const API_BASE_URL = 'http://localhost:8080/api';
+
+        // ============================================
+        // 用户个人中心模块
+        // ============================================
+        const ProfileModule = {
+            userData: null,
+
+            // 初始化
+            async init() {
+                this.bindEvents();
+                await this.loadUserProfile();
+                await this.loadUserStats();
+                await this.loadRecentActivities();
+            },
+
+            // 绑定事件
+            bindEvents() {
+                const navbar = document.getElementById('navbar');
+                const profileForm = document.getElementById('profileForm');
+
+                // 导航栏滚动效果
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+
+                // 表单提交事件
+                if (profileForm) {
+                    profileForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.saveProfile();
+                    });
+                }
+            },
+
+            // 获取Token
+            getToken() {
+                return localStorage.getItem('token') || '';
+            },
+
+            // 获取用户ID
+            getUserId() {
+                return localStorage.getItem('userId') || '';
+            },
+
+            // 显示加载状态
+            showLoading(show) {
+                let loadingEl = document.getElementById('pageLoading');
+                if (show) {
+                    if (!loadingEl) {
+                        loadingEl = document.createElement('div');
+                        loadingEl.id = 'pageLoading';
+                        loadingEl.className = 'loading-overlay';
+                        loadingEl.innerHTML = '<div class="loading-spinner"></div>';
+                        document.body.appendChild(loadingEl);
+                    }
+                    loadingEl.style.display = 'flex';
+                } else if (loadingEl) {
+                    loadingEl.style.display = 'none';
+                }
+            },
+
+            // 显示提示消息
+            showToast(message, isError = false) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${isError ? 'error' : ''}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            },
+
+            // ============================================
+            // 加载用户资料
+            // ============================================
+            async loadUserProfile() {
+                this.showLoading(true);
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+                        headers: {
+                            'Authorization': `Bearer ${this.getToken()}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.userData = data;
+                        this.renderUserProfile(data);
+                        this.fillProfileForm(data);
+                    } else {
+                        // 使用本地数据
+                        this.loadProfileFromLocal();
+                    }
+                } catch (error) {
+                    console.error('加载用户资料失败:', error);
+                    this.loadProfileFromLocal();
+                }
+
+                this.showLoading(false);
+            },
+
+            // 渲染用户资料头部
+            renderUserProfile(data) {
+                const profileName = document.getElementById('profileName');
+                const profilePhone = document.getElementById('profilePhone');
+                const profileRegTime = document.getElementById('profileRegTime');
+                const profileBadge = document.getElementById('profileBadge');
+
+                if (profileName) profileName.textContent = data.name || '用户';
+                if (profilePhone) profilePhone.textContent = `手机号：${this.maskPhone(data.phone)}`;
+                if (profileRegTime) profileRegTime.textContent = `注册时间：${this.formatDate(data.registrationDate || data.createTime)}`;
+                if (profileBadge) {
+                    const memberType = data.memberType || '普通会员';
+                    profileBadge.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 10 L60 35 L85 35 L65 50 L75 75 L50 60 L25 75 L35 50 L15 35 L40 35 Z" fill="currentColor"/>
+                        </svg>
+                        ${memberType}
+                    `;
+                }
+            },
+
+            // 填充表单
+            fillProfileForm(data) {
+                document.getElementById('userName').value = data.name || '';
+                document.getElementById('userGender').value = data.gender || '男';
+                document.getElementById('userAge').value = data.age || '';
+                document.getElementById('userPhone').value = data.phone || '';
+                document.getElementById('userHeight').value = data.height || '';
+                document.getElementById('userWeight').value = data.weight || '';
+                document.getElementById('userAddress').value = data.address || '';
+                document.getElementById('emergencyName').value = data.emergencyName || '';
+                document.getElementById('emergencyPhone').value = data.emergencyPhone || '';
+            },
+
+            // 从本地加载
+            loadProfileFromLocal() {
+                const localData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+                if (Object.keys(localData).length > 0) {
+                    this.userData = localData;
+                    this.renderUserProfile(localData);
+                    this.fillProfileForm(localData);
+                } else {
+                    // 使用默认数据
+                    const defaultData = {
+                        name: '张大爷',
+                        gender: '男',
+                        age: 68,
+                        phone: '13888888888',
+                        height: 170,
+                        weight: 70,
+                        address: '北京市朝阳区',
+                        emergencyName: '张先生',
+                        emergencyPhone: '13999999999',
+                        memberType: '普通会员',
+                        registrationDate: '2024-01-15'
+                    };
+                    this.userData = defaultData;
+                    this.renderUserProfile(defaultData);
+                    this.fillProfileForm(defaultData);
+                }
+            },
+
+            // ============================================
+            // 保存用户资料
+            // ============================================
+            async saveProfile() {
+                const formData = {
+                    name: document.getElementById('userName').value,
+                    gender: document.getElementById('userGender').value,
+                    age: parseInt(document.getElementById('userAge').value) || null,
+                    height: parseInt(document.getElementById('userHeight').value) || null,
+                    weight: parseFloat(document.getElementById('userWeight').value) || null,
+                    address: document.getElementById('userAddress').value,
+                    emergencyName: document.getElementById('emergencyName').value,
+                    emergencyPhone: document.getElementById('emergencyPhone').value
+                };
+
+                this.showLoading(true);
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.getToken()}`
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.showToast('保存成功！');
+                        // 更新本地数据
+                        this.userData = { ...this.userData, ...formData };
+                        localStorage.setItem('userProfile', JSON.stringify(this.userData));
+                        // 重新渲染头部
+                        this.renderUserProfile(this.userData);
+                    } else {
+                        // 保存到本地
+                        this.saveProfileToLocal(formData);
+                    }
+                } catch (error) {
+                    console.error('保存失败:', error);
+                    this.saveProfileToLocal(formData);
+                }
+
+                this.showLoading(false);
+            },
+
+            // 保存到本地
+            saveProfileToLocal(formData) {
+                this.userData = { ...this.userData, ...formData };
+                localStorage.setItem('userProfile', JSON.stringify(this.userData));
+                this.showToast('保存成功！（本地模式）');
+                this.renderUserProfile(this.userData);
+            },
+
+            // ============================================
+            // 加载用户统计数据
+            // ============================================
+            async loadUserStats() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/user/stats`, {
+                        headers: {
+                            'Authorization': `Bearer ${this.getToken()}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.renderUserStats(data);
+                    } else {
+                        this.loadStatsFromLocal();
+                    }
+                } catch (error) {
+                    console.error('加载统计数据失败:', error);
+                    this.loadStatsFromLocal();
+                }
+            },
+
+            // 渲染统计数据
+            renderUserStats(data) {
+                document.getElementById('statCheckIn').textContent = data.checkInDays || 0;
+                document.getElementById('statLearning').textContent = data.learningCount || 0;
+                document.getElementById('statAssessment').textContent = data.assessmentCount || 0;
+                document.getElementById('statRecords').textContent = data.recordCount || 0;
+            },
+
+            // 从本地加载统计数据
+            loadStatsFromLocal() {
+                const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+                const defaultStats = {
+                    checkInDays: stats.checkInDays || 0,
+                    learningCount: stats.learningCount || 0,
+                    assessmentCount: stats.assessmentCount || 0,
+                    recordCount: stats.recordCount || 0
+                };
+                this.renderUserStats(defaultStats);
+            },
+
+            // ============================================
+            // 加载最近活动
+            // ============================================
+            async loadRecentActivities() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/user/activities`, {
+                        headers: {
+                            'Authorization': `Bearer ${this.getToken()}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.renderActivities(data);
+                    } else {
+                        this.loadActivitiesFromLocal();
+                    }
+                } catch (error) {
+                    console.error('加载活动记录失败:', error);
+                    this.loadActivitiesFromLocal();
+                }
+            },
+
+            // 渲染活动列表
+            renderActivities(activities) {
+                const listEl = document.getElementById('activityList');
+                if (!listEl) return;
+
+                if (!activities || activities.length === 0) {
+                    listEl.innerHTML = '<li class="history-item"><div class="history-content"><p class="history-title">暂无活动记录</p></div></li>';
+                    return;
+                }
+
+                const iconMap = {
+                    'checkin': '📊',
+                    'assessment': '🧘',
+                    'learning': '📚',
+                    'record': '💊',
+                    'default': '📝'
+                };
+
+                listEl.innerHTML = activities.map(activity => `
+                    <li class="history-item">
+                        <div class="history-icon">${iconMap[activity.type] || iconMap['default']}</div>
+                        <div class="history-content">
+                            <p class="history-title">${activity.title}</p>
+                            <p class="history-time">${this.formatDateTime(activity.time)}</p>
+                        </div>
+                        <span class="history-status">${activity.status || '已完成'}</span>
+                    </li>
+                `).join('');
+            },
+
+            // 从本地加载活动
+            loadActivitiesFromLocal() {
+                const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+                if (activities.length > 0) {
+                    this.renderActivities(activities);
+                } else {
+                    // 默认活动数据
+                    const defaultActivities = [
+                        { type: 'checkin', title: '完成每日健康打卡', time: new Date().toISOString(), status: '已完成' },
+                        { type: 'assessment', title: '完成中医体质测评', time: new Date(Date.now() - 86400000).toISOString(), status: '已完成' },
+                        { type: 'learning', title: '学习春季养生知识', time: new Date(Date.now() - 172800000).toISOString(), status: '已完成' },
+                        { type: 'record', title: '记录血压数据', time: new Date(Date.now() - 172800000).toISOString(), status: '已完成' }
+                    ];
+                    this.renderActivities(defaultActivities);
+                }
+            },
+
+            // ============================================
+            // 工具方法
+            // ============================================
+            maskPhone(phone) {
+                if (!phone) return '--';
+                return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+            },
+
+            formatDate(dateStr) {
+                if (!dateStr) return '--';
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+            },
+
+            formatDateTime(dateStr) {
+                if (!dateStr) return '--';
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+            }
+        };
+
+        // ============================================
+        // 页面初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            ProfileModule.init();
+        });
+    </script>
+</body>
+</html>
