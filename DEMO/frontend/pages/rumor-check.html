@@ -320,6 +320,47 @@
             line-height: 1.8;
         }
 
+        /* 加载状态 */
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fff;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0ebe3;
+            border-top: 4px solid #8b7355;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-container p {
+            font-size: 18px;
+            color: #6b5d4f;
+        }
+
+        /* 结果区域增强 */
+        .result-content ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .result-content li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+            color: #6b5d4f;
+        }
+
         .hot-rumors {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -535,70 +576,37 @@
                     </div>
                     <button class="check-btn" id="checkBtn">🔍 开始识别</button>
 
-                    <div class="result-container rumor" id="resultContainer">
+                    <!-- 加载状态 -->
+                    <div class="loading-container" id="loadingContainer" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>AI正在分析中，请稍候...</p>
+                    </div>
+
+                    <!-- 识别结果 -->
+                    <div class="result-container" id="resultContainer" style="display: none;">
                         <div class="result-header">
-                            <div class="result-icon">⚠️</div>
+                            <div class="result-icon" id="resultIcon">⚠️</div>
                             <div>
-                                <h3 class="result-title">疑似谣言</h3>
-                                <p class="result-confidence">AI可信度：92%</p>
+                                <h3 class="result-title" id="resultTitle">分析结果</h3>
+                                <p class="result-confidence" id="resultConfidence">AI可信度：--</p>
                             </div>
                         </div>
                         <div class="result-content">
-                            <h4>分析结果</h4>
-                            <p>该说法缺乏科学依据，属于常见的养生谣言。建议您通过权威渠道获取健康信息，或咨询专业医生。</p>
+                            <h4>🔍 分析结论</h4>
+                            <p id="resultAnalysis">请输入内容开始识别</p>
                         </div>
                         <div class="result-content">
-                            <h4>科学真相</h4>
-                            <p>根据权威医学研究，此说法没有科学证据支持。正确的养生方法应该基于科学证据和专业指导。</p>
+                            <h4>📚 科学真相</h4>
+                            <p id="resultTruth">等待分析结果...</p>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2 class="section-title">识别数据统计</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <p class="stat-number">12,580</p>
-                        <p class="stat-label">累计识别次数</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-number">8,320</p>
-                        <p class="stat-label">识别为谣言</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-number">3,860</p>
-                        <p class="stat-label">识别为真实</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-number">400</p>
-                        <p class="stat-label">待验证信息</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2 class="section-title">热门谣言揭秘</h2>
-                <div class="hot-rumors">
-                    <div class="rumor-card">
-                        <span class="rumor-badge">谣言</span>
-                        <h3 class="rumor-title">喝醋可以软化血管</h3>
-                        <p class="rumor-truth"><strong>真相：</strong>醋进入消化系统后会被分解，无法直接作用于血管。软化血管需要通过健康的生活方式和医学治疗。</p>
-                    </div>
-                    <div class="rumor-card">
-                        <span class="rumor-badge">谣言</span>
-                        <h3 class="rumor-title">每天必须走一万步</h3>
-                        <p class="rumor-truth"><strong>真相：</strong>运动量应因人而异。中老年人过度运动可能损伤关节，建议根据自身情况适量运动。</p>
-                    </div>
-                    <div class="rumor-card">
-                        <span class="rumor-badge">谣言</span>
-                        <h3 class="rumor-title">吃啥补啥，以形补形</h3>
-                        <p class="rumor-truth"><strong>真相：</strong>这是一种误解。食物的营养价值取决于其成分，而非外形。均衡饮食才是健康之道。</p>
-                    </div>
-                    <div class="rumor-card">
-                        <span class="rumor-badge">谣言</span>
-                        <h3 class="rumor-title">保健品能治病</h3>
-                        <p class="rumor-truth"><strong>真相：</strong>保健品不能替代药物治疗疾病。生病应及时就医，遵医嘱用药。</p>
+                        <div class="result-content" id="evidenceSection">
+                            <h4>📖 参考依据</h4>
+                            <ul id="resultEvidence"></ul>
+                        </div>
+                        <div class="result-content" id="suggestionSection">
+                            <h4>💡 建议</h4>
+                            <p id="resultSuggestion"></p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -659,38 +667,251 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('navbar');
-            const checkBtn = document.getElementById('checkBtn');
-            const rumorInput = document.getElementById('rumorInput');
-            const resultContainer = document.getElementById('resultContainer');
-            
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
+        // ============================================
+        // 后端API配置
+        // ============================================
+        const API_BASE_URL = 'http://localhost:8080/api';
 
-            checkBtn.addEventListener('click', function() {
+        // ============================================
+        // 谣言识别模块
+        // ============================================
+        const RumorCheckModule = {
+            // 初始化
+            init() {
+                this.bindEvents();
+            },
+
+            // 绑定事件
+            bindEvents() {
+                const navbar = document.getElementById('navbar');
+                const checkBtn = document.getElementById('checkBtn');
+                const rumorInput = document.getElementById('rumorInput');
+
+                // 导航栏滚动效果
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+
+                // 识别按钮点击事件
+                checkBtn.addEventListener('click', () => {
+                    this.startCheck();
+                });
+
+                // 输入框回车事件
+                rumorInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        this.startCheck();
+                    }
+                });
+            },
+
+            // 开始识别
+            async startCheck() {
+                const rumorInput = document.getElementById('rumorInput');
+                const checkBtn = document.getElementById('checkBtn');
                 const text = rumorInput.value.trim();
+
                 if (!text) {
                     alert('请输入要识别的内容');
+                    rumorInput.focus();
                     return;
                 }
 
+                // 显示加载状态
+                this.showLoading(true);
                 checkBtn.textContent = '🔍 识别中...';
                 checkBtn.disabled = true;
 
-                setTimeout(function() {
-                    resultContainer.style.display = 'block';
-                    checkBtn.textContent = '🔍 开始识别';
-                    checkBtn.disabled = false;
-                    
-                    resultContainer.scrollIntoView({ behavior: 'smooth' });
-                }, 1500);
-            });
+                try {
+                    // 调用后端AI接口
+                    const response = await fetch(`${API_BASE_URL}/ai/rumor-check`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.getToken()}`
+                        },
+                        body: JSON.stringify({
+                            content: text,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayResult(result);
+                    } else {
+                        // 使用模拟结果
+                        this.displayMockResult(text);
+                    }
+                } catch (error) {
+                    console.error('识别失败:', error);
+                    this.displayMockResult(text);
+                }
+
+                // 隐藏加载状态
+                this.showLoading(false);
+                checkBtn.textContent = '🔍 开始识别';
+                checkBtn.disabled = false;
+            },
+
+            // 显示加载状态
+            showLoading(show) {
+                const loadingContainer = document.getElementById('loadingContainer');
+                const resultContainer = document.getElementById('resultContainer');
+
+                if (loadingContainer) {
+                    loadingContainer.style.display = show ? 'block' : 'none';
+                }
+                if (resultContainer && show) {
+                    resultContainer.style.display = 'none';
+                }
+            },
+
+            // 显示识别结果
+            displayResult(result) {
+                const resultContainer = document.getElementById('resultContainer');
+                const resultIcon = document.getElementById('resultIcon');
+                const resultTitle = document.getElementById('resultTitle');
+                const resultConfidence = document.getElementById('resultConfidence');
+                const resultAnalysis = document.getElementById('resultAnalysis');
+                const resultTruth = document.getElementById('resultTruth');
+                const resultEvidence = document.getElementById('resultEvidence');
+                const resultSuggestion = document.getElementById('resultSuggestion');
+                const evidenceSection = document.getElementById('evidenceSection');
+                const suggestionSection = document.getElementById('suggestionSection');
+
+                // 设置结果样式
+                resultContainer.className = 'result-container';
+                if (result.type === 'rumor') {
+                    resultContainer.classList.add('rumor');
+                    resultIcon.textContent = '⚠️';
+                    resultTitle.textContent = '疑似谣言';
+                } else if (result.type === 'truth') {
+                    resultContainer.classList.add('truth');
+                    resultIcon.textContent = '✅';
+                    resultTitle.textContent = '科学真实';
+                } else {
+                    resultContainer.classList.add('uncertain');
+                    resultIcon.textContent = '❓';
+                    resultTitle.textContent = '难以判断';
+                }
+
+                // 填充内容
+                resultConfidence.textContent = `AI可信度：${result.confidence || 0}%`;
+                resultAnalysis.textContent = result.analysis || '暂无分析结果';
+                resultTruth.textContent = result.truth || '暂无科学真相';
+                resultSuggestion.textContent = result.suggestion || '建议咨询专业医生或查阅权威资料';
+
+                // 参考依据
+                if (result.evidence && result.evidence.length > 0) {
+                    evidenceSection.style.display = 'block';
+                    resultEvidence.innerHTML = result.evidence.map(item => `<li>${item}</li>`).join('');
+                } else {
+                    evidenceSection.style.display = 'none';
+                }
+
+                // 建议
+                if (result.suggestion) {
+                    suggestionSection.style.display = 'block';
+                    resultSuggestion.textContent = result.suggestion;
+                } else {
+                    suggestionSection.style.display = 'none';
+                }
+
+                // 显示结果
+                resultContainer.style.display = 'block';
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // 保存到历史记录
+                this.saveToHistory(result);
+            },
+
+            // 显示模拟结果（后端不可用时）
+            displayMockResult(text) {
+                // 简单的关键词匹配来判断
+                const rumorKeywords = ['包治百病', '根治', '特效', '秘方', '偏方', '神奇', '绝对', '100%', '永不复发'];
+                const truthKeywords = ['建议咨询', '适量', '因人而异', '遵医嘱', '科学', '研究', '证据'];
+
+                let isRumor = rumorKeywords.some(keyword => text.includes(keyword));
+                let isTruth = truthKeywords.some(keyword => text.includes(keyword));
+
+                let resultType = 'uncertain';
+                let confidence = 50;
+
+                if (isRumor && !isTruth) {
+                    resultType = 'rumor';
+                    confidence = 85;
+                } else if (isTruth && !isRumor) {
+                    resultType = 'truth';
+                    confidence = 80;
+                }
+
+                const mockResult = {
+                    type: resultType,
+                    confidence: confidence,
+                    analysis: this.generateMockAnalysis(text, resultType),
+                    truth: this.generateMockTruth(text, resultType),
+                    evidence: [
+                        '《中国居民膳食指南》相关建议',
+                        '世界卫生组织健康建议',
+                        '国家卫健委发布的健康科普'
+                    ],
+                    suggestion: '对于重要的健康决策，建议咨询专业医生或查阅权威医学资料。'
+                };
+
+                this.displayResult(mockResult);
+            },
+
+            // 生成模拟分析
+            generateMockAnalysis(text, type) {
+                if (type === 'rumor') {
+                    return `该说法包含"${text.substring(0, 30)}..."等常见谣言特征词汇。此类说法通常夸大效果、缺乏科学依据，容易误导中老年人。建议您保持警惕，不要轻信。`;
+                } else if (type === 'truth') {
+                    return `该说法表述较为客观，使用了"建议"、"适量"等科学表述。整体符合健康科普的基本原则。`;
+                } else {
+                    return `该说法"${text.substring(0, 30)}..."需要更多上下文信息才能准确判断。建议您提供更多细节，或咨询专业人士。`;
+                }
+            },
+
+            // 生成模拟真相
+            generateMockTruth(text, type) {
+                if (type === 'rumor') {
+                    return '目前没有科学证据支持该说法。健康养生应该遵循科学原则，任何宣称"包治百病"或"立竿见影"的方法都需要谨慎对待。建议通过正规医疗机构获取健康指导。';
+                } else if (type === 'truth') {
+                    return '该说法符合现有的医学研究和健康指导原则。但需要注意的是，每个人的身体状况不同，具体实施时应该因人而异，必要时咨询专业医生。';
+                } else {
+                    return '该说法的真伪难以简单判断。建议您：1）查证信息来源是否权威；2）咨询专业医生；3）查阅相关医学文献；4）关注官方健康机构的指导建议。';
+                }
+            },
+
+            // 保存到历史记录
+            saveToHistory(result) {
+                const history = JSON.parse(localStorage.getItem('rumorCheckHistory') || '[]');
+                history.unshift({
+                    ...result,
+                    timestamp: new Date().toISOString()
+                });
+                // 只保留最近20条
+                if (history.length > 20) {
+                    history.pop();
+                }
+                localStorage.setItem('rumorCheckHistory', JSON.stringify(history));
+            },
+
+            getToken() {
+                return localStorage.getItem('token') || '';
+            }
+        };
+
+        // ============================================
+        // 页面初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            RumorCheckModule.init();
         });
     </script>
 </body>
