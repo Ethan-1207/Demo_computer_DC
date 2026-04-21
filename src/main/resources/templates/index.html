@@ -13,33 +13,33 @@
            统一色系｜统一圆角｜统一间距｜柔和光影｜高级呼吸感
            ============================================ */
         :root {
-            /* 主色：高级温润草木墨绿（不刺眼、不土、高级耐看） */
-            --primary: #2D5B4D;
-            --primary-light: #4A7C6B;
-            --primary-bg: rgba(45, 91, 77, 0.06);
-            --primary-border: rgba(45, 91, 77, 0.12);
+            /* 新中式极简 — 低饱和度、浅灰与淡墨绿为主（尽量保持低对比） */
+            --primary: #65746D; /* 淡墨绿，低饱和 */
+            --primary-light: #7C8B85;
+            --primary-bg: rgba(101, 116, 109, 0.035);
+            --primary-border: rgba(101, 116, 109, 0.06);
 
-            /* AI养生蓝、防骗暖棕（同质感莫兰迪，不再杂乱突兀） */
-            --ai-blue: #5988A2;
-            --ai-blue-bg: rgba(89, 136, 162, 0.06);
-            --anti-warm: #A18264;
-            --anti-warm-bg: rgba(161, 130, 100, 0.06);
+            /* 辅助色（极淡） */
+            --ai-blue: #9AA7A3; /* 非鲜艳，偏青灰 */
+            --ai-blue-bg: rgba(154, 167, 163, 0.035);
+            --anti-warm: #9C958C; /* 很柔和的暖灰 */
+            --anti-warm-bg: rgba(156, 149, 140, 0.03);
 
-            /* 背景：极致柔和暖米白渐变，不惨白、不发黄 */
-            --bg-start: #FAF7F2;
-            --bg-end: #F3EFE7;
+            /* 背景：米白色宣纸质感的极浅渐变 */
+            --bg-start: #FBF8F3;
+            --bg-end: #F8F5F0;
 
-            /* 卡片：纯净柔白+细腻磨砂质感 */
-            --card-bg: #ffffff;
-            --card-border: rgba(222, 214, 202, 0.4);
+            /* 卡片：纯净柔白，边框更淡 */
+            --card-bg: #FFFFFF;
+            --card-border: rgba(200, 196, 190, 0.28);
 
-            /* 文字层级（严格清晰，不灰不黑） */
-            --text-title: #262E2A;
-            --text-body: #48544F;
-            --text-sub: #7A8881;
-            --text-tip: #A0AEA6;
+            /* 文字层级（整体偏低对比，仍保证可读） */
+            --text-title: #323834; /* 深灰偏墨 */
+            --text-body: #55615C; /* 中性墨绿/灰 */
+            --text-sub: #7B857F;
+            --text-tip: #9FA8A4;
 
-            /* 全局统一圆角（完美弧度，不大不小不生硬） */
+            /* 全局统一圆角 */
             --radius-sm: 10px;
             --radius-md: 16px;
             --radius-lg: 22px;
@@ -52,12 +52,14 @@
             --space-lg: 28px;
             --space-xl: 36px;
 
-            /* 柔和高级阴影（弥散长阴影，不发黑不生硬） */
-            --shadow: 0 10px 32px rgba(45, 91, 77, 0.05);
-            --shadow-hover: 0 16px 48px rgba(45, 91, 77, 0.09);
+            /* 阴影：尽量淡，保持通透 */
+            --shadow: 0 8px 28px rgba(40, 44, 42, 0.03);
+            --shadow-hover: 0 14px 42px rgba(40, 44, 42, 0.045);
 
-            /* 丝滑缓动动画（iOS原生曲线，不生硬不卡顿） */
+            /* 动画 */
             --transition: all 320ms cubic-bezier(0.34, 0, 0.12, 1);
+            /* 背景墨色图片不透明度（可调） */
+            --bg-ink-opacity: 0.12;
         }
 
         * {
@@ -76,17 +78,42 @@
             line-height: 1.7;
             overflow-x: hidden;
             padding-bottom: 100px;
+            position: relative;
         }
 
-        /* 细微肌理质感，高级不单调 */
+        /* 宣纸肌理质感 + 朦胧远山与竹影（使用单张图片控制可见度，低对比） */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at top, rgba(45,91,77,0.02), transparent 60%);
+            /* 保留柔和的云雾与宣纸纹理，具体的竹影与远山由页面背景图片控制（低不透明度的 <img>） */
+            background:
+                radial-gradient(ellipse 60px 180px at 4% 30%, rgba(85, 96, 90, 0.03) 0%, transparent 72%),
+                radial-gradient(ellipse 40px 140px at 2% 60%, rgba(85, 96, 90, 0.02) 0%, transparent 72%),
+                radial-gradient(ellipse 320px 120px at 18% 86%, rgba(80, 86, 86, 0.02) 0%, transparent 62%),
+                radial-gradient(ellipse 260px 100px at 76% 92%, rgba(80, 86, 86, 0.018) 0%, transparent 62%),
+                radial-gradient(ellipse at top, rgba(90, 98, 94, 0.008), transparent 60%);
             pointer-events: none;
             z-index: 0;
         }
+
+        /* 右侧轻微晕染，真正的竹影与远山由单张图片控制（id="bg-ink-image"） */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 260px;
+            height: 100vh;
+            background:
+                radial-gradient(ellipse 36px 120px at 78% 18%, rgba(95, 108, 102, 0.03) 0%, transparent 74%),
+                radial-gradient(ellipse 30px 96px at 86% 44%, rgba(95, 108, 102, 0.02) 0%, transparent 74%),
+                radial-gradient(ellipse 24px 80px at 92% 68%, rgba(95, 108, 102, 0.018) 0%, transparent 74%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 备用图片背景（使用单张 <img id="bg-ink-image"> 控制竹影与远山，样式在页面中以 inline style 设置） */
 
         .container {
             max-width: 1200px;
@@ -96,8 +123,12 @@
             z-index: 1;
         }
 
+        /* 控制单张背景图片的显示与透明度 */
+        #bg-ink-image { position: fixed; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: 0; opacity: var(--bg-ink-opacity); }
+        @media (max-width: 768px) { #bg-ink-image { display: none; } }
+
         /* ============================================
-           顶部导航栏 · iOS毛玻璃完美版
+           顶部导航栏 · 宣纸毛玻璃版
            ============================================ */
         .nav-wrapper {
             position: fixed;
@@ -105,17 +136,17 @@
             left: 0;
             right: 0;
             z-index: 999;
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: rgba(255, 253, 248, 0.85);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-bottom: 1px solid var(--card-border);
-            box-shadow: 0 2px 16px rgba(45,91,77,0.03);
+            box-shadow: 0 2px 12px rgba(74, 82, 80, 0.03);
             transition: var(--transition);
         }
 
         .nav-wrapper.scrolled {
-            background: rgba(255,255,255,0.96);
-            box-shadow: 0 4px 24px rgba(45,91,77,0.06);
+            background: rgba(255, 253, 248, 0.94);
+            box-shadow: 0 4px 20px rgba(74, 82, 80, 0.05);
         }
 
         .nav-container {
@@ -142,7 +173,7 @@
             transition: var(--transition);
         }
 
-        .nav-logo:hover { opacity: 0.92; }
+        .nav-logo:hover { opacity: 0.88; }
 
         .nav-logo svg { width: 38px; height: 38px; }
 
@@ -194,7 +225,7 @@
         }
 
         /* ============================================
-           大区块卡片 · 完美圆角+柔和阴影
+           大区块卡片 · 宣纸质感+淡墨边框
            ============================================ */
         .section {
             margin-bottom: var(--space-xl);
@@ -206,6 +237,17 @@
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            background: radial-gradient(ellipse at right, rgba(139, 163, 154, 0.03) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .section:hover { box-shadow: var(--shadow-hover); }
@@ -247,7 +289,7 @@
         }
 
         /* ============================================
-           右上角实时时钟 · 精致高级卡片
+           右上角实时时钟 · 淡雅卡片
            ============================================ */
         .realtime-clock {
             background: var(--primary-bg);
@@ -274,7 +316,7 @@
         }
 
         /* ============================================
-           每日推送卡片 · 最重点美化！完美精致版
+           每日推送卡片 · 淡墨风格
            ============================================ */
         .daily-push-cards {
             display: flex;
@@ -283,7 +325,7 @@
         }
 
         .push-card {
-            background: #fcfcfb;
+            background: rgba(252, 250, 245, 0.8);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
             padding: var(--space-md);
@@ -291,7 +333,7 @@
             position: relative;
         }
 
-        /* 左侧精致细渐变条，不再粗笨 */
+        /* 左侧淡墨细条 */
         .push-card::before {
             content: '';
             position: absolute;
@@ -306,15 +348,15 @@
         .push-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-hover);
-            border-color: rgba(222,214,202,0.6);
+            border-color: rgba(180, 175, 165, 0.35);
         }
 
-        /* 三个标签对应三色，统一高级渐变胶囊 */
+        /* 三个标签对应三色，统一淡雅渐变 */
         .push-card.solar-term::before { background: linear-gradient(180deg, var(--primary-light), var(--primary)); }
-        .push-card.ai-course::before { background: linear-gradient(180deg, #6A9CBF, var(--ai-blue)); }
-        .push-card.anti-fraud::before { background: linear-gradient(180deg, #BC9A79, var(--anti-warm)); }
+        .push-card.ai-course::before { background: linear-gradient(180deg, #A8C5D4, var(--ai-blue)); }
+        .push-card.anti-fraud::before { background: linear-gradient(180deg, #C8B9AA, var(--anti-warm)); }
 
-        /* 标签：完美圆角胶囊，精致高级不土 */
+        /* 标签：完美圆角胶囊，淡雅高级 */
         .push-card-tag {
             display: inline-block;
             padding: 6px 16px;
@@ -326,8 +368,8 @@
         }
 
         .push-card.solar-term .push-card-tag { background: linear-gradient(135deg, var(--primary-light), var(--primary)); }
-        .push-card.ai-course .push-card-tag { background: linear-gradient(135deg, #6A9CBF, var(--ai-blue)); }
-        .push-card.anti-fraud .push-card-tag { background: linear-gradient(135deg, #BC9A79, var(--anti-warm)); }
+        .push-card.ai-course .push-card-tag { background: linear-gradient(135deg, #A8C5D4, var(--ai-blue)); }
+        .push-card.anti-fraud .push-card-tag { background: linear-gradient(135deg, #C8B9AA, var(--anti-warm)); }
 
         .push-card-title {
             font-size: 17.5px;
@@ -348,7 +390,7 @@
             margin-top: 16px;
         }
 
-        /* 播放按钮精致美化 */
+        /* 播放按钮淡雅版 */
         .play-button {
             display: inline-flex;
             align-items: center;
@@ -363,12 +405,12 @@
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(45,91,77,0.15);
+            box-shadow: 0 4px 12px rgba(139, 163, 154, 0.12);
         }
 
         .play-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(45,91,77,0.22);
+            box-shadow: 0 6px 18px rgba(139, 163, 154, 0.18);
         }
 
         /* ============================================
@@ -399,7 +441,7 @@
         .tool-button.primary {
             background: linear-gradient(135deg, var(--primary-light), var(--primary));
             color: white;
-            box-shadow: 0 6px 20px rgba(45,91,77,0.2);
+            box-shadow: 0 6px 18px rgba(139, 163, 154, 0.15);
         }
 
         .tool-button.secondary {
@@ -420,7 +462,7 @@
         }
 
         .knowledge-card {
-            background: white;
+            background: rgba(255, 253, 248, 0.85);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
             padding: var(--space-md);
@@ -483,20 +525,23 @@
         /* 美化滚动条 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(45,91,77,0.15); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(45,91,77,0.25); }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 163, 154, 0.18); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(139, 163, 154, 0.28); }
     </style>
 </head>
 <body>
-<nav class="nav-wrapper" id="navbar">
+    <!-- Decorative background image placeholder. JS will try to load a user-provided image (e.g. /image.png) from several candidate paths. -->
+    <img id="bg-ink-image" src="" alt="" />
+
+    <nav class="nav-wrapper" id="navbar">
     <div class="nav-container">
         <a href="index.html" class="nav-logo" style="text-decoration: none;">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                <path d="M50 20 L50 80" stroke="#2D5B4D" stroke-width="2.5"/>
-                <path d="M30 35 L70 35" stroke="#2D5B4D" stroke-width="2.5"/>
-                <path d="M30 50 L70 50" stroke="#2D5B4D" stroke-width="2.5"/>
-                <path d="M30 65 L70 65" stroke="#2D5B4D" stroke-width="2.5"/>
+                <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                <path d="M50 20 L50 80" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 35 L70 35" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 50 L70 50" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 65 L70 65" stroke="currentColor" stroke-width="2.5"/>
             </svg>
             <span>草本数智</span>
         </a>
@@ -518,11 +563,11 @@
         <section class="section">
             <div class="section-header">
                 <svg class="section-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="50" cy="50" rx="35" ry="25" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                    <path d="M50 25 L50 75" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <path d="M30 35 Q50 45 70 35" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                    <path d="M30 50 Q50 60 70 50" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                    <path d="M30 65 Q50 75 70 65" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
+                    <ellipse cx="50" cy="50" rx="35" ry="25" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M50 25 L50 75" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 35 Q50 45 70 35" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M30 50 Q50 60 70 50" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M30 65 Q50 75 70 65" stroke="currentColor" stroke-width="2.5" fill="none"/>
                 </svg>
                 <div style="flex-grow: 1;">
                     <h2 class="section-title">今日养生推送</h2>
@@ -546,12 +591,12 @@
         <section class="section">
             <div class="section-header">
                 <svg class="section-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M30 80 Q50 20 70 80" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                    <path d="M40 70 L40 50" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <path d="M60 70 L60 50" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <circle cx="40" cy="45" r="4" fill="#2D5B4D"/>
-                    <circle cx="60" cy="45" r="4" fill="#2D5B4D"/>
-                    <path d="M35 30 Q50 25 65 30" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
+                    <path d="M30 80 Q50 20 70 80" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M40 70 L40 50" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M60 70 L60 50" stroke="currentColor" stroke-width="2.5"/>
+                    <circle cx="40" cy="45" r="4" fill="currentColor"/>
+                    <circle cx="60" cy="45" r="4" fill="currentColor"/>
+                    <path d="M35 30 Q50 25 65 30" stroke="currentColor" stroke-width="2.5" fill="none"/>
                 </svg>
                 <div>
                     <h2 class="section-title">AI 养生核心工具</h2>
@@ -568,11 +613,11 @@
         <section class="section">
             <div class="section-header">
                 <svg class="section-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="20" y="20" width="60" height="60" stroke="#2D5B4D" stroke-width="2.5" fill="none"/>
-                    <path d="M30 35 L70 35" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <path d="M30 50 L70 50" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <path d="M30 65 L70 65" stroke="#2D5B4D" stroke-width="2.5"/>
-                    <path d="M45 25 L45 75" stroke="#2D5B4D" stroke-width="2.5"/>
+                    <rect x="20" y="20" width="60" height="60" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M30 35 L70 35" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 50 L70 50" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 65 L70 65" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M45 25 L45 75" stroke="currentColor" stroke-width="2.5"/>
                 </svg>
                 <div>
                     <h2 class="section-title">中医养生知识库</h2>
@@ -765,7 +810,61 @@
         });
         ClockModule.init();
         initPageData();
+        // 尝试加载用户在 src 下放置的图片（有可能放在不同位置）
+        tryLoadBgImage();
     });
+
+    // 尝试从候选路径加载背景图片，使用第一个可用的
+    async function tryLoadBgImage() {
+        const candidates = [
+            '/image.png',
+            '/static/image.png',
+            '/images/image.png',
+            '/src/image.png',
+            '/resources/image.png',
+            '/static/img/image.png'
+        ];
+        const imgEl = document.getElementById('bg-ink-image');
+        if (!imgEl) return;
+        for (const path of candidates) {
+            try {
+                const res = await fetch(path, { method: 'HEAD' });
+                if (res.ok) { imgEl.src = path; console.info('使用背景图片：', path); return; }
+            } catch (e) { /* 忽略 */ }
+        }
+        console.info('未找到候选背景图片，保持默认纹理与低饱和 SVG（如有）');
+    }
+
+    // 开发者：添加一个小滑块可以在页面上即时调整背景画像不透明度（仅用于调试并保存在 localStorage）
+    (function addBgOpacityControl(){
+        try {
+            const control = document.createElement('div');
+            control.style.position = 'fixed';
+            control.style.right = '12px';
+            control.style.bottom = '12px';
+            control.style.zIndex = 2000;
+            control.style.background = 'rgba(255,255,255,0.6)';
+            control.style.backdropFilter = 'blur(6px)';
+            control.style.border = '1px solid rgba(0,0,0,0.06)';
+            control.style.borderRadius = '8px';
+            control.style.padding = '6px 10px';
+            control.style.display = 'flex';
+            control.style.alignItems = 'center';
+            control.style.gap = '8px';
+            control.style.fontSize = '12px';
+            control.innerHTML = '<label style="font-size:12px;color:#55615C;">背景透明度</label><input id="bgOpacityRange" type="range" min="0" max="0.6" step="0.01" style="width:120px;" />';
+            document.body.appendChild(control);
+            const range = document.getElementById('bgOpacityRange');
+            const stored = localStorage.getItem('bgInkOpacity');
+            const initial = stored ? stored : getComputedStyle(document.documentElement).getPropertyValue('--bg-ink-opacity').trim();
+            range.value = parseFloat(initial) || 0.12;
+            range.addEventListener('input', (e) => {
+                const v = e.target.value;
+                document.documentElement.style.setProperty('--bg-ink-opacity', v);
+                localStorage.setItem('bgInkOpacity', v);
+            });
+        } catch (e) { /* ignore */ }
+    })();
 
     async function initPageData() {
         await Promise.all([ DailyPushModule.fetchDailyPush(), KnowledgeModule.fetchKnowledgeCategories() ]);
