@@ -1,22 +1,50 @@
 package com.example.caoben.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
+    
+    @Column(nullable = false, length = 100)
     private String password;
+    
+    @Column(length = 50)
     private String name;
+    
+    @Column(length = 10)
     private String gender;
+    
     private Integer age;
     private Double height;
     private Double weight;
+    
+    @Column(name = "constitution_type", length = 50)
     private String constitutionType;
+    
+    @Column(name = "constitution_description", columnDefinition = "TEXT")
     private String constitutionDescription;
+    
+    @Column(name = "health_advice", columnDefinition = "TEXT")
     private String healthAdvice;
+    
+    @Column(name = "dietary_recommendations", columnDefinition = "TEXT")
     private String dietaryRecommendations;
+    
+    @Column(name = "exercise_recommendations", columnDefinition = "TEXT")
     private String exerciseRecommendations;
+    
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     public User() {

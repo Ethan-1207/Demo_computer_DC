@@ -1,35 +1,39 @@
 package com.example.caoben.service;
 
 import com.example.caoben.model.User;
+import com.example.caoben.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserService {
-    private final Map<String, User> users = new ConcurrentHashMap<>();
+    @Autowired
+    private UserRepository userRepository;
+    
     private final Map<String, String> sessions = new ConcurrentHashMap<>();
-    private Long userIdCounter = 1L;
 
     public User register(String username, String password, String name) {
-        if (users.containsKey(username)) {
+        if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("用户名已存在");
         }
 
         User user = new User(username, password);
-        user.setId(userIdCounter++);
         user.setName(name);
-        users.put(username, user);
-
-        return user;
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        
+        return userRepository.save(user);
     }
 
     public String login(String username, String password) {
-        User user = users.get(username);
-        if (user == null || !user.getPassword().equals(password)) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
             throw new RuntimeException("用户名或密码错误");
         }
 
@@ -43,7 +47,7 @@ public class UserService {
         if (username == null) {
             return null;
         }
-        return users.get(username);
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public void updateUser(String token, User userData) {
@@ -64,6 +68,7 @@ public class UserService {
         if (userData.getExerciseRecommendations() != null) user.setExerciseRecommendations(userData.getExerciseRecommendations());
 
         user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     public void logout(String token) {
