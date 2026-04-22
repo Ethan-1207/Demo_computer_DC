@@ -6,8 +6,40 @@
     <title>我的 - 草本数智</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #65746D;
+            --primary-light: #7C8B85;
+            --primary-bg: rgba(101, 116, 109, 0.035);
+            --primary-border: rgba(101, 116, 109, 0.06);
+            --ai-blue: #9AA7A3;
+            --ai-blue-bg: rgba(154, 167, 163, 0.035);
+            --anti-warm: #9C958C;
+            --anti-warm-bg: rgba(156, 149, 140, 0.03);
+            --bg-start: #FBF8F3;
+            --bg-end: #F8F5F0;
+            --card-bg: #FFFFFF;
+            --card-border: rgba(200, 196, 190, 0.28);
+            --text-title: #323834;
+            --text-body: #55615C;
+            --text-sub: #7B857F;
+            --text-tip: #9FA8A4;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+            --space-xs: 8px;
+            --space-sm: 14px;
+            --space-md: 20px;
+            --space-lg: 28px;
+            --space-xl: 36px;
+            --shadow: 0 8px 28px rgba(40, 44, 42, 0.03);
+            --shadow-hover: 0 14px 42px rgba(40, 44, 42, 0.045);
+            --transition: all 320ms cubic-bezier(0.34, 0, 0.12, 1);
+            --bg-ink-opacity: 0.32;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,202 +47,242 @@
         }
 
         body {
-            font-family: 'Noto Serif SC', '思源宋体', serif;
-            background-color: #f7f5f0;
-            color: #2c2c2c;
-            line-height: 1.8;
+            font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(170deg, var(--bg-start), var(--bg-end));
+            background-attachment: fixed;
+            color: var(--text-body);
+            line-height: 1.7;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60px 180px at 4% 30%, rgba(85, 96, 90, 0.03) 0%, transparent 72%),
+                radial-gradient(ellipse 40px 140px at 2% 60%, rgba(85, 96, 90, 0.02) 0%, transparent 72%),
+                radial-gradient(ellipse 320px 120px at 18% 86%, rgba(80, 86, 86, 0.02) 0%, transparent 62%),
+                radial-gradient(ellipse 260px 100px at 76% 92%, rgba(80, 86, 86, 0.018) 0%, transparent 62%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* 导航栏 */
         .nav-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
-            border-bottom: 2px solid #8b7355;
-            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
-            transition: all 0.3s ease;
-            animation: navSlideDown 1s ease-out;
+            z-index: 999;
+            background: rgba(255, 253, 248, 0.85);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: 0 2px 12px rgba(74, 82, 80, 0.03);
+            transition: var(--transition);
         }
 
         .nav-wrapper.scrolled {
-            height: 60px;
-        }
-
-        @keyframes navSlideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            background: rgba(255, 253, 248, 0.94);
+            box-shadow: 0 4px 20px rgba(74, 82, 80, 0.05);
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 120px;
-            transition: height 0.3s ease;
+            height: 84px;
+            transition: var(--transition);
         }
 
-        .nav-wrapper.scrolled .nav-container {
-            height: 60px;
-        }
+        .nav-wrapper.scrolled .nav-container { height: 70px; }
 
         .nav-logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #8b7355;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 21px;
             text-decoration: none;
+            transition: var(--transition);
         }
+
+        .nav-logo:hover { opacity: 0.88; }
+        .nav-logo svg { width: 38px; height: 38px; }
 
         .nav-menu {
             display: flex;
-            gap: 30px;
+            gap: 6px;
             list-style: none;
         }
 
         .nav-menu li a {
             text-decoration: none;
-            color: #5a4a3a;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            color: var(--text-body);
+            font-weight: 500;
+            font-size: 15px;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
             position: relative;
+            letter-spacing: 0.01em;
         }
 
-        .nav-menu li a:hover,
+        .nav-menu li a:hover {
+            color: var(--primary);
+            background: var(--primary-bg);
+        }
+
         .nav-menu li a.active {
-            color: #8b7355;
-            background-color: rgba(139, 115, 85, 0.1);
+            color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .nav-menu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 2.5px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
         .main-content {
-            margin-top: 140px;
+            margin-top: 110px;
             padding-bottom: 60px;
         }
 
-        /* 登录/注册容器 */
+        /* 登录注册卡片 */
         .auth-container {
             max-width: 500px;
             margin: 60px auto;
-            background: #fff;
-            border: 2px solid #c9b896;
-            border-radius: 12px;
-            padding: 50px;
-            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
+
+        .auth-container:hover { box-shadow: var(--shadow-hover); }
 
         .auth-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: var(--space-lg);
         }
 
         .auth-header h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 10px;
+            color: var(--text-title);
+            margin-bottom: var(--space-sm);
         }
 
         .auth-header p {
-            font-size: 16px;
-            color: #6b5d4f;
+            font-size: 15px;
+            color: var(--text-sub);
         }
 
         .auth-tabs {
             display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #d4c4a8;
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--card-border);
         }
 
         .auth-tab {
             flex: 1;
-            padding: 15px;
+            padding: 14px;
             text-align: center;
             cursor: pointer;
-            font-size: 18px;
-            font-weight: 700;
-            color: #6b5d4f;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-sub);
+            transition: var(--transition);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
         }
 
         .auth-tab.active {
-            color: #8b7355;
-            border-bottom: 3px solid #8b7355;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
         }
 
         .auth-tab:hover {
-            color: #8b7355;
+            color: var(--primary);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: var(--space-md);
         }
 
         .form-label {
             display: block;
-            font-size: 16px;
-            font-weight: 700;
-            color: #5a4a3a;
-            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-body);
+            margin-bottom: var(--space-xs);
         }
 
         .form-input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #d4c4a8;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: 'Noto Serif SC', '思源宋体', serif;
-            background: #faf8f5;
-            transition: all 0.3s ease;
+            padding: 14px 16px;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: inherit;
+            background: rgba(252, 250, 245, 0.6);
+            transition: var(--transition);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #8b7355;
+            border-color: var(--primary);
+            background: #fff;
         }
 
         .auth-btn {
             width: 100%;
-            padding: 15px;
-            background: #8b7355;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
             color: #fff;
             border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Noto Serif SC', '思源宋体', serif;
+            transition: var(--transition);
+            font-family: inherit;
+            margin-top: 8px;
         }
 
         .auth-btn:hover {
-            background: #7a6248;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .auth-btn:disabled {
-            background: #ccc;
+            background: var(--text-tip);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .auth-form {
@@ -221,7 +293,7 @@
             display: block;
         }
 
-        /* 用户资料区域 */
+        /* 个人资料 */
         .profile-content {
             display: none;
         }
@@ -231,109 +303,116 @@
         }
 
         .profile-header {
-            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
-            border-bottom: 2px solid #c9b896;
-            padding: 50px 0;
-            margin-bottom: 50px;
+            background: rgba(252, 250, 245, 0.6);
+            border-bottom: 1px solid var(--card-border);
+            padding: var(--space-xl) 0;
+            margin-bottom: var(--space-xl);
+            border-radius: var(--radius-xl);
         }
 
         .profile-info {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: var(--space-lg);
         }
 
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 42px;
             color: #fff;
             border: 4px solid #fff;
-            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+            box-shadow: var(--shadow);
         }
 
         .profile-details h1 {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 10px;
+            color: var(--text-title);
+            margin-bottom: 6px;
         }
 
         .profile-details p {
-            font-size: 16px;
-            color: #6b5d4f;
-            margin-bottom: 5px;
+            font-size: 15px;
+            color: var(--text-sub);
+            margin-bottom: 4px;
         }
 
+        /* 区块卡片 */
         .section {
-            margin-bottom: 60px;
-            padding: 40px;
-            background-color: #fff;
-            border: 2px solid #c9b896;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
+            margin-bottom: var(--space-xl);
+            padding: var(--space-xl);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
+
+        .section:hover { box-shadow: var(--shadow-hover); }
 
         .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 25px;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: var(--space-lg);
         }
 
         .form-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: var(--space-md);
         }
 
         .save-btn {
-            padding: 15px 40px;
-            background: #8b7355;
+            padding: 12px 36px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
             color: #fff;
             border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Noto Serif SC', '思源宋体', serif;
+            transition: var(--transition);
+            font-family: inherit;
         }
 
         .save-btn:hover {
-            background: #7a6248;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .logout-btn {
-            padding: 15px 40px;
-            background: #f44336;
+            padding: 12px 36px;
+            background: #F26A6A;
             color: #fff;
             border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Noto Serif SC', '思源宋体', serif;
+            transition: var(--transition);
+            font-family: inherit;
         }
 
         .logout-btn:hover {
-            background: #d32f2f;
+            background: #E05555;
+            transform: translateY(-2px);
         }
 
-        /* 加载状态 */
+        /* 加载 & 提示 */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(247, 245, 240, 0.9);
+            background: rgba(251, 248, 243, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -341,12 +420,12 @@
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid #f0ebe3;
-            border-top: 4px solid #8b7355;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--card-border);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.9s linear infinite;
         }
 
         @keyframes spin {
@@ -354,525 +433,389 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* 消息提示 */
         .toast {
             position: fixed;
             top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 15px 30px;
-            background: #4caf50;
+            padding: 12px 24px;
+            background: var(--primary);
             color: #fff;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
             z-index: 3000;
             animation: slideDown 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
         .toast.error {
-            background: #f44336;
+            background: #F26A6A;
         }
 
         @keyframes slideDown {
-            from {
-                transform: translateX(-50%) translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateX(-50%) translateY(-10px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .auth-container {
-                padding: 30px;
-            }
+            .nav-menu { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .auth-container { padding: var(--space-md); }
+            .section { padding: var(--space-md); }
+            .profile-info { flex-direction: column; text-align: center; }
         }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 163, 154, 0.18); border-radius: 3px; }
     </style>
 </head>
+
 <body>
-    <nav class="nav-wrapper" id="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px;">
-                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
-                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
-                </svg>
-                <span>草本数智</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="index.html">首页</a></li>
-                <li><a href="about.html">关于我们</a></li>
-                <li><a href="news.html">健康资讯</a></li>
-                <li><a href="health.html">个人健康管理</a></li>
-                <li><a href="family.html">子女父母健康看板</a></li>
-                <li><a href="profile.html" class="active">我的</a></li>
-                <li><a href="vip.html">会员</a></li>
-            </ul>
-        </div>
-    </nav>
+<img id="bg-ink-image" src="" alt="" style="position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100vw;opacity:var(--bg-ink-opacity);pointer-events:none;z-index:0;">
 
-    <main class="main-content">
-        <div class="container">
-            <!-- 登录/注册区域 -->
-            <div class="auth-container" id="authContainer">
-                <div class="auth-header">
-                    <h1>欢迎使用草本数智</h1>
-                    <p>AI驱动的中医健康管理平台</p>
-                </div>
+<nav class="nav-wrapper" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                <path d="M50 20 L50 80" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 35 L70 35" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 50 L70 50" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M30 65 L70 65" stroke="currentColor" stroke-width="2.5"/>
+            </svg>
+            <span>草本数智</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="news.html">健康资讯</a></li>
+            <li><a href="health.html">个人健康管理</a></li>
+            <li><a href="family.html">子女父母健康看板</a></li>
+            <li><a href="profile.html" class="active">我的</a></li>
+            <li><a href="vip.html">会员</a></li>
+        </ul>
+    </div>
+</nav>
 
-                <div class="auth-tabs">
-                    <div class="auth-tab active" data-tab="login">登录</div>
-                    <div class="auth-tab" data-tab="register">注册</div>
-                </div>
-
-                <!-- 登录表单 -->
-                <form class="auth-form active" id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label">用户名</label>
-                        <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">密码</label>
-                        <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" required>
-                    </div>
-                    <button type="submit" class="auth-btn" id="loginBtn">登录</button>
-                </form>
-
-                <!-- 注册表单 -->
-                <form class="auth-form" id="registerForm">
-                    <div class="form-group">
-                        <label class="form-label">用户名</label>
-                        <input type="text" class="form-input" id="registerUsername" placeholder="请输入用户名" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">密码</label>
-                        <input type="password" class="form-input" id="registerPassword" placeholder="请输入密码（至少6位）" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">确认密码</label>
-                        <input type="password" class="form-input" id="registerConfirmPassword" placeholder="请再次输入密码" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">姓名</label>
-                        <input type="text" class="form-input" id="registerName" placeholder="请输入您的姓名" required>
-                    </div>
-                    <button type="submit" class="auth-btn" id="registerBtn">注册</button>
-                </form>
+<main class="main-content">
+    <div class="container">
+        <!-- 登录/注册 -->
+        <div class="auth-container" id="authContainer">
+            <div class="auth-header">
+                <h1>欢迎使用草本数智</h1>
+                <p>AI驱动的中医健康管理平台</p>
             </div>
 
-            <!-- 用户资料区域 -->
-            <div class="profile-content" id="profileContent">
-                <div class="profile-header">
-                    <div class="profile-info">
-                        <div class="profile-avatar">👤</div>
-                        <div class="profile-details">
-                            <h1 id="profileName">加载中...</h1>
-                            <p id="profileUsername">用户名：--</p>
-                            <p id="profileRegTime">注册时间：--</p>
-                        </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">登录</div>
+                <div class="auth-tab" data-tab="register">注册</div>
+            </div>
+
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="auth-btn" id="loginBtn">登录</button>
+            </form>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="请输入密码（至少6位）" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">确认密码</label>
+                    <input type="password" class="form-input" id="registerConfirmPassword" placeholder="请再次输入密码" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">姓名</label>
+                    <input type="text" class="form-input" id="registerName" placeholder="请输入您的姓名" required>
+                </div>
+                <button type="submit" class="auth-btn" id="registerBtn">注册</button>
+            </form>
+        </div>
+
+        <!-- 个人资料 -->
+        <div class="profile-content" id="profileContent">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-details">
+                        <h1 id="profileName">加载中...</h1>
+                        <p id="profileUsername">用户名：--</p>
+                        <p id="profileRegTime">注册时间：--</p>
                     </div>
                 </div>
+            </div>
 
-                <section class="section">
-                    <h2 class="section-title">个人资料</h2>
-                    <form id="profileForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">姓名</label>
-                                <input type="text" class="form-input" id="userName" name="name" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">性别</label>
-                                <select class="form-input" id="userGender" name="gender">
-                                    <option value="">请选择</option>
-                                    <option value="男">男</option>
-                                    <option value="女">女</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">年龄</label>
-                                <input type="number" class="form-input" id="userAge" name="age" value="" min="1" max="120">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">身高(cm)</label>
-                                <input type="number" class="form-input" id="userHeight" name="height" value="" min="50" max="250">
-                            </div>
+            <section class="section">
+                <h2 class="section-title">个人资料</h2>
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">姓名</label>
+                            <input type="text" class="form-input" id="userName" name="name" value="">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">体重(kg)</label>
-                            <input type="number" class="form-input" id="userWeight" name="weight" value="" min="20" max="200" step="0.1">
+                            <label class="form-label">性别</label>
+                            <select class="form-input" id="userGender" name="gender">
+                                <option value="">请选择</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
                         </div>
-                        <button type="submit" class="save-btn" id="saveBtn">保存修改</button>
-                    </form>
-                </section>
-
-                <section class="section">
-                    <h2 class="section-title">AI体质分析结果</h2>
-                    <div id="constitutionResult">
-                        <p style="color: #6b5d4f; text-align: center;">暂无体质分析结果，请前往<a href="constitution.html" style="color: #8b7355;">体质辨识页面</a>进行测评</p>
                     </div>
-                </section>
-
-                <section class="section">
-                    <h2 class="section-title">账户设置</h2>
-                    <div style="text-align: center;">
-                        <button class="logout-btn" id="logoutBtn">退出登录</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">年龄</label>
+                            <input type="number" class="form-input" id="userAge" name="age" value="" min="1" max="120">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">身高(cm)</label>
+                            <input type="number" class="form-input" id="userHeight" name="height" value="" min="50" max="250">
+                        </div>
                     </div>
-                </section>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">体重(kg)</label>
+                        <input type="number" class="form-input" id="userWeight" name="weight" value="" min="20" max="200" step="0.1">
+                    </div>
+                    <button type="submit" class="save-btn" id="saveBtn">保存修改</button>
+                </form>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">AI体质分析结果</h2>
+                <div id="constitutionResult">
+                    <p style="color: var(--text-sub); text-align: center;">暂无体质分析结果，请前往<a href="constitution.html" style="color: var(--primary);">体质辨识页面</a>进行测评</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">账户设置</h2>
+                <div style="text-align: center;">
+                    <button class="logout-btn" id="logoutBtn">退出登录</button>
+                </div>
+            </section>
         </div>
-    </main>
+    </div>
+</main>
 
-    <script>
-        const API_BASE_URL = 'http://localhost:8080/api';
+<script>
+    // ====================== 原有JS逻辑完全保留 ======================
+    const API_BASE_URL = 'http://localhost:8080/api';
 
-        const ProfileModule = {
-            userData: null,
+    const ProfileModule = {
+        userData: null,
 
-            init() {
-                this.bindEvents();
-                this.checkLoginStatus();
-            },
+        init() {
+            this.bindEvents();
+            this.checkLoginStatus();
+        },
 
-            bindEvents() {
-                const navbar = document.getElementById('navbar');
+        bindEvents() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
 
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    this.switchTab(e.target.dataset.tab);
                 });
+            });
 
-                // 标签切换
-                document.querySelectorAll('.auth-tab').forEach(tab => {
-                    tab.addEventListener('click', (e) => {
-                        this.switchTab(e.target.dataset.tab);
-                    });
+            document.getElementById('loginForm').addEventListener('submit', e => {
+                e.preventDefault(); this.login();
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', e => {
+                e.preventDefault(); this.register();
+            });
+
+            document.getElementById('profileForm').addEventListener('submit', e => {
+                e.preventDefault(); this.saveProfile();
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                this.logout();
+            });
+        },
+
+        switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            document.getElementById(`${tab}Form`).classList.add('active');
+        },
+
+        checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            token ? this.showProfile() : this.showAuth();
+        },
+
+        showAuth() {
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('profileContent').style.display = 'none';
+        },
+
+        showProfile() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('profileContent').style.display = 'block';
+        },
+
+        async login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true; btn.textContent = '登录中...';
+            try {
+                const res = await fetch(`${API_BASE_URL}/user/login`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
                 });
+                const result = await res.json();
+                if (result.success) {
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('userId', result.user.id);
+                    this.showToast('登录成功！');
+                    this.showProfile(); this.loadUserProfile();
+                } else this.showToast(result.message, true);
+            } catch (e) { this.showToast('登录失败', true); }
+            btn.disabled = false; btn.textContent = '登录';
+        },
 
-                // 登录表单
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.login();
+        async register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const name = document.getElementById('registerName').value;
+            const btn = document.getElementById('registerBtn');
+            if (password !== confirmPassword) { this.showToast('密码不一致', true); return; }
+            btn.disabled = true; btn.textContent = '注册中...';
+            try {
+                const res = await fetch(`${API_BASE_URL}/user/register`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, name })
                 });
+                const result = await res.json();
+                if (result.success) {
+                    this.showToast('注册成功！');
+                    this.switchTab('login');
+                    document.getElementById('loginUsername').value = username;
+                } else this.showToast(result.message, true);
+            } catch (e) { this.showToast('注册失败', true); }
+            btn.disabled = false; btn.textContent = '注册';
+        },
 
-                // 注册表单
-                document.getElementById('registerForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.register();
+        async loadUserProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/user/info`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-
-                // 个人资料表单
-                document.getElementById('profileForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.saveProfile();
-                });
-
-                // 退出登录
-                document.getElementById('logoutBtn').addEventListener('click', () => {
-                    this.logout();
-                });
-            },
-
-            switchTab(tab) {
-                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-                
-                document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-                document.getElementById(`${tab}Form`).classList.add('active');
-            },
-
-            checkLoginStatus() {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    this.showProfile();
-                    this.loadUserProfile();
-                } else {
-                    this.showAuth();
+                const result = await res.json();
+                if (result.success && result.user) {
+                    this.userData = result.user;
+                    this.renderUserProfile(result.user);
+                    this.fillProfileForm(result.user);
+                    this.renderConstitutionResult(result.user);
                 }
-            },
+            } catch (e) {}
+        },
 
-            showAuth() {
-                document.getElementById('authContainer').style.display = 'block';
-                document.getElementById('profileContent').style.display = 'none';
-            },
+        renderUserProfile(user) {
+            document.getElementById('profileName').textContent = user.name || '未设置';
+            document.getElementById('profileUsername').textContent = `用户名：${user.username}`;
+            document.getElementById('profileRegTime').textContent = `注册时间：${this.formatDate(user.createdAt)}`;
+        },
 
-            showProfile() {
-                document.getElementById('authContainer').style.display = 'none';
-                document.getElementById('profileContent').style.display = 'block';
-            },
+        fillProfileForm(user) {
+            document.getElementById('userName').value = user.name || '';
+            document.getElementById('userGender').value = user.gender || '';
+            document.getElementById('userAge').value = user.age || '';
+            document.getElementById('userHeight').value = user.height || '';
+            document.getElementById('userWeight').value = user.weight || '';
+        },
 
-            async login() {
-                const username = document.getElementById('loginUsername').value;
-                const password = document.getElementById('loginPassword').value;
-                const btn = document.getElementById('loginBtn');
-
-                btn.disabled = true;
-                btn.textContent = '登录中...';
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/user/login`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ username, password })
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        localStorage.setItem('token', result.token);
-                        localStorage.setItem('userId', result.user.id);
-                        this.showToast('登录成功！');
-                        this.showProfile();
-                        this.loadUserProfile();
-                    } else {
-                        this.showToast(result.message, true);
-                    }
-                } catch (error) {
-                    console.error('登录失败:', error);
-                    this.showToast('登录失败，请稍后重试', true);
-                }
-
-                btn.disabled = false;
-                btn.textContent = '登录';
-            },
-
-            async register() {
-                const username = document.getElementById('registerUsername').value;
-                const password = document.getElementById('registerPassword').value;
-                const confirmPassword = document.getElementById('registerConfirmPassword').value;
-                const name = document.getElementById('registerName').value;
-                const btn = document.getElementById('registerBtn');
-
-                if (password !== confirmPassword) {
-                    this.showToast('两次输入的密码不一致', true);
-                    return;
-                }
-
-                btn.disabled = true;
-                btn.textContent = '注册中...';
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/user/register`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ username, password, name })
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        this.showToast('注册成功！请登录');
-                        this.switchTab('login');
-                        document.getElementById('loginUsername').value = username;
-                        document.getElementById('loginPassword').value = '';
-                    } else {
-                        this.showToast(result.message, true);
-                    }
-                } catch (error) {
-                    console.error('注册失败:', error);
-                    this.showToast('注册失败，请稍后重试', true);
-                }
-
-                btn.disabled = false;
-                btn.textContent = '注册';
-            },
-
-            async loadUserProfile() {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/user/info`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success && result.user) {
-                        this.userData = result.user;
-                        this.renderUserProfile(result.user);
-                        this.fillProfileForm(result.user);
-                        this.renderConstitutionResult(result.user);
-                    }
-                } catch (error) {
-                    console.error('加载用户资料失败:', error);
-                }
-            },
-
-            renderUserProfile(user) {
-                document.getElementById('profileName').textContent = user.name || '未设置';
-                document.getElementById('profileUsername').textContent = `用户名：${user.username}`;
-                document.getElementById('profileRegTime').textContent = `注册时间：${this.formatDate(user.createdAt)}`;
-            },
-
-            fillProfileForm(user) {
-                document.getElementById('userName').value = user.name || '';
-                document.getElementById('userGender').value = user.gender || '';
-                document.getElementById('userAge').value = user.age || '';
-                document.getElementById('userHeight').value = user.height || '';
-                document.getElementById('userWeight').value = user.weight || '';
-            },
-
-            renderConstitutionResult(user) {
-                const container = document.getElementById('constitutionResult');
-                
-                if (!user.constitutionType) {
-                    container.innerHTML = '<p style="color: #6b5d4f; text-align: center;">暂无体质分析结果，请前往<a href="constitution.html" style="color: #8b7355;">体质辨识页面</a>进行测评</p>';
-                    return;
-                }
-
-                let html = `
-                    <div style="background: #faf8f5; padding: 30px; border-radius: 8px; margin-bottom: 20px;">
-                        <h3 style="font-size: 24px; color: #8b7355; margin-bottom: 15px;">您的体质类型</h3>
-                        <p style="font-size: 28px; font-weight: bold; color: #8b7355; margin-bottom: 10px;">${user.constitutionType}</p>
-                        ${user.constitutionDescription ? `<p style="font-size: 16px; color: #5a4a3a; line-height: 1.8;">${user.constitutionDescription}</p>` : ''}
-                    </div>
-                `;
-
-                if (user.healthAdvice) {
-                    html += `
-                        <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #d4c4a8;">
-                            <h3 style="font-size: 20px; color: #8b7355; margin-bottom: 15px;">💡 养生建议</h3>
-                            <p style="color: #5a4a3a; line-height: 1.8;">${user.healthAdvice}</p>
-                        </div>
-                    `;
-                }
-
-                if (user.dietaryRecommendations) {
-                    html += `
-                        <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #d4c4a8;">
-                            <h3 style="font-size: 20px; color: #8b7355; margin-bottom: 15px;">🍎 饮食建议</h3>
-                            <p style="color: #5a4a3a; line-height: 1.8;">${user.dietaryRecommendations}</p>
-                        </div>
-                    `;
-                }
-
-                if (user.exerciseRecommendations) {
-                    html += `
-                        <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #d4c4a8;">
-                            <h3 style="font-size: 20px; color: #8b7355; margin-bottom: 15px;">🏃 运动建议</h3>
-                            <p style="color: #5a4a3a; line-height: 1.8;">${user.exerciseRecommendations}</p>
-                        </div>
-                    `;
-                }
-
-                container.innerHTML = html;
-            },
-
-            async saveProfile() {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    this.showToast('请先登录', true);
-                    return;
-                }
-
-                const userData = {
-                    name: document.getElementById('userName').value,
-                    gender: document.getElementById('userGender').value,
-                    age: parseInt(document.getElementById('userAge').value) || null,
-                    height: parseFloat(document.getElementById('userHeight').value) || null,
-                    weight: parseFloat(document.getElementById('userWeight').value) || null
-                };
-
-                const btn = document.getElementById('saveBtn');
-                btn.disabled = true;
-                btn.textContent = '保存中...';
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/user/update`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify(userData)
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        this.showToast('保存成功！');
-                        this.userData = result.user;
-                        this.renderUserProfile(result.user);
-                    } else {
-                        this.showToast(result.message, true);
-                    }
-                } catch (error) {
-                    console.error('保存失败:', error);
-                    this.showToast('保存失败，请稍后重试', true);
-                }
-
-                btn.disabled = false;
-                btn.textContent = '保存修改';
-            },
-
-            async logout() {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    try {
-                        await fetch(`${API_BASE_URL}/user/logout`, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-                    } catch (error) {
-                        console.error('登出失败:', error);
-                    }
-                }
-
-                localStorage.removeItem('token');
-                localStorage.removeItem('userId');
-                this.showToast('已退出登录');
-                this.showAuth();
-            },
-
-            showToast(message, isError = false) {
-                const toast = document.createElement('div');
-                toast.className = `toast ${isError ? 'error' : ''}`;
-                toast.textContent = message;
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 3000);
-            },
-
-            formatDate(dateStr) {
-                if (!dateStr) return '--';
-                const date = new Date(dateStr);
-                return date.toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
+        renderConstitutionResult(user) {
+            const container = document.getElementById('constitutionResult');
+            if (!user.constitutionType) {
+                container.innerHTML = `<p style="color:var(--text-sub);text-align:center;">暂无体质分析结果，请前往<a href="constitution.html" style="color:var(--primary);">体质辨识页面</a>进行测评</p>`;
+                return;
             }
-        };
+            let html = `
+                <div style="background:var(--primary-bg);padding:24px;border-radius:var(--radius-lg);margin-bottom:20px;">
+                    <h3 style="font-size:20px;color:var(--primary);margin-bottom:10px;">您的体质类型</h3>
+                    <p style="font-size:24px;font-weight:600;color:var(--primary);margin-bottom:8px;">${user.constitutionType}</p>
+                    ${user.constitutionDescription ? `<p style="line-height:1.7;">${user.constitutionDescription}</p>` : ''}
+                </div>
+            `;
+            if (user.healthAdvice) html += `<div style="padding:20px;border-radius:var(--radius-lg);border:1px solid var(--card-border);margin-bottom:16px;"><h4 style="color:var(--primary);margin-bottom:8px;">💡 养生建议</h4><p>${user.healthAdvice}</p></div>`;
+            if (user.dietaryRecommendations) html += `<div style="padding:20px;border-radius:var(--radius-lg);border:1px solid var(--card-border);margin-bottom:16px;"><h4 style="color:var(--primary);margin-bottom:8px;">🍎 饮食建议</h4><p>${user.dietaryRecommendations}</p></div>`;
+            if (user.exerciseRecommendations) html += `<div style="padding:20px;border-radius:var(--radius-lg);border:1px solid var(--card-border);"><h4 style="color:var(--primary);margin-bottom:8px;">🏃 运动建议</h4><p>${user.exerciseRecommendations}</p></div>`;
+            container.innerHTML = html;
+        },
 
-        document.addEventListener('DOMContentLoaded', () => {
-            ProfileModule.init();
-        });
-    </script>
+        async saveProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) { this.showToast('请先登录', true); return; }
+            const data = {
+                name: document.getElementById('userName').value,
+                gender: document.getElementById('userGender').value,
+                age: parseInt(document.getElementById('userAge').value) || null,
+                height: parseFloat(document.getElementById('userHeight').value) || null,
+                weight: parseFloat(document.getElementById('userWeight').value) || null
+            };
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true; btn.textContent = '保存中...';
+            try {
+                const res = await fetch(`${API_BASE_URL}/user/update`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    this.showToast('保存成功！');
+                    this.userData = result.user;
+                    this.renderUserProfile(result.user);
+                } else this.showToast(result.message, true);
+            } catch (e) { this.showToast('保存失败', true); }
+            btn.disabled = false; btn.textContent = '保存修改';
+        },
+
+        async logout() {
+            localStorage.removeItem('token'); localStorage.removeItem('userId');
+            this.showToast('已退出登录');
+            this.showAuth();
+        },
+
+        showToast(msg, err = false) {
+            const t = document.createElement('div');
+            t.className = `toast ${err ? 'error' : ''}`;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        },
+
+        formatDate(d) {
+            if (!d) return '--';
+            return new Date(d).toLocaleDateString('zh-CN');
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => ProfileModule.init());
+</script>
 </body>
 </html>

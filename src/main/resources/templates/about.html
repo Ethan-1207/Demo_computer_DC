@@ -6,8 +6,62 @@
     <title>关于我们 - 草本数智</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ============================================
+
+           统一色系｜统一圆角｜统一间距｜柔和光影｜高级呼吸感
+           ============================================ */
+        :root {
+            /* 新中式极简 — 低饱和度、浅灰与淡墨绿为主（尽量保持低对比） */
+            --primary: #65746D; /* 淡墨绿，低饱和 */
+            --primary-light: #7C8B85;
+            --primary-bg: rgba(101, 116, 109, 0.035);
+            --primary-border: rgba(101, 116, 109, 0.06);
+
+            /* 辅助色（极淡） */
+            --ai-blue: #9AA7A3; /* 非鲜艳，偏青灰 */
+            --ai-blue-bg: rgba(154, 167, 163, 0.035);
+            --anti-warm: #9C958C; /* 很柔和的暖灰 */
+            --anti-warm-bg: rgba(156, 149, 140, 0.03);
+
+            /* 背景：米白色宣纸质感的极浅渐变 */
+            --bg-start: #FBF8F3;
+            --bg-end: #F8F5F0;
+
+            /* 卡片：纯净柔白，边框更淡 */
+            --card-bg: #FFFFFF;
+            --card-border: rgba(200, 196, 190, 0.28);
+
+            /* 文字层级（整体偏低对比，仍保证可读） */
+            --text-title: #323834; /* 深灰偏墨 */
+            --text-body: #55615C; /* 中性墨绿/灰 */
+            --text-sub: #7B857F;
+            --text-tip: #9FA8A4;
+
+            /* 全局统一圆角 */
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+
+            /* 全局统一间距 */
+            --space-xs: 8px;
+            --space-sm: 14px;
+            --space-md: 20px;
+            --space-lg: 28px;
+            --space-xl: 36px;
+
+            /* 阴影：尽量淡，保持通透 */
+            --shadow: 0 8px 28px rgba(40, 44, 42, 0.03);
+            --shadow-hover: 0 14px 42px rgba(40, 44, 42, 0.045);
+
+            /* 动画 */
+            --transition: all 320ms cubic-bezier(0.34, 0, 0.12, 1);
+            /* 背景墨色图片不透明度（可调，适度提高以增强清晰度） */
+            --bg-ink-opacity: 0.32;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,155 +69,498 @@
         }
 
         body {
-            font-family: 'Noto Serif SC', '思源宋体', serif;
-            background-color: #f7f5f0;
-            color: #2c2c2c;
-            line-height: 1.8;
+            font-family: 'Noto Sans SC', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(170deg, var(--bg-start), var(--bg-end));
+            background-attachment: fixed;
+            color: var(--text-body);
+            line-height: 1.7;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+            position: relative;
         }
+
+        /* 宣纸肌理质感 + 朦胧远山与竹影（使用单张图片控制可见度，低对比） */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            /* 保留柔和的云雾与宣纸纹理，具体的竹影与远山由页面背景图片控制（低不透明度的 <img>） */
+            background:
+                radial-gradient(ellipse 60px 180px at 4% 30%, rgba(85, 96, 90, 0.03) 0%, transparent 72%),
+                radial-gradient(ellipse 40px 140px at 2% 60%, rgba(85, 96, 90, 0.02) 0%, transparent 72%),
+                radial-gradient(ellipse 320px 120px at 18% 86%, rgba(80, 86, 86, 0.02) 0%, transparent 62%),
+                radial-gradient(ellipse 260px 100px at 76% 92%, rgba(80, 86, 86, 0.018) 0%, transparent 62%),
+                radial-gradient(ellipse at top, rgba(90, 98, 94, 0.008), transparent 60%);
+            pointer-events: none;
+            /* 将纸张纹理放到更后面，避免覆盖图片造成模糊感 */
+            z-index: -1;
+        }
+
+        /* 右侧轻微晕染，真正的竹影与远山由单张图片控制（id="bg-ink-image"） */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 260px;
+            height: 100vh;
+            background:
+                radial-gradient(ellipse 36px 120px at 78% 18%, rgba(95, 108, 102, 0.03) 0%, transparent 74%),
+                radial-gradient(ellipse 30px 96px at 86% 44%, rgba(95, 108, 102, 0.02) 0%, transparent 74%),
+                radial-gradient(ellipse 24px 80px at 92% 68%, rgba(95, 108, 102, 0.018) 0%, transparent 74%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 备用图片背景（使用单张 <img id="bg-ink-image"> 控制竹影与远山，样式在页面中以 inline style 设置） */
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* 控制单张背景图片的显示与透明度
+           - 接近全屏但略小：width:95vw，使其比最开始的 cover 稍小一些
+           - 提高 max-width 和 max-height，避免竖屏下过度裁剪 */
+        #bg-ink-image {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100vw;
+            max-width: none;
+            height: auto;
+            max-height: 100vh;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 0;
+            opacity: var(--bg-ink-opacity);
+            image-rendering: -webkit-optimize-contrast;
+            -webkit-image-rendering: -webkit-optimize-contrast;
+            filter: contrast(1.08) saturate(1.02) brightness(1.02);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        @media (max-width: 768px) { #bg-ink-image { display: none; } }
+
+        /* ============================================
+           顶部导航栏 · 宣纸毛玻璃版
+           ============================================ */
         .nav-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
-            border-bottom: 2px solid #8b7355;
-            box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
-            transition: all 0.3s ease;
-            animation: navSlideDown 1s ease-out;
+            z-index: 999;
+            background: rgba(255, 253, 248, 0.85);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: 0 2px 12px rgba(74, 82, 80, 0.03);
+            transition: var(--transition);
         }
 
         .nav-wrapper.scrolled {
-            height: 60px;
-        }
-
-        @keyframes navSlideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            background: rgba(255, 253, 248, 0.94);
+            box-shadow: 0 4px 20px rgba(74, 82, 80, 0.05);
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 120px;
-            transition: height 0.3s ease;
+            height: 84px;
+            transition: var(--transition);
         }
 
-        .nav-wrapper.scrolled .nav-container {
-            height: 60px;
-        }
+        .nav-wrapper.scrolled .nav-container { height: 70px; }
 
         .nav-logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #8b7355;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 21px;
             text-decoration: none;
+            transition: var(--transition);
         }
 
-        .nav-logo svg {
-            width: 40px;
-            height: 40px;
-        }
+        .nav-logo:hover { opacity: 0.88; }
+
+        .nav-logo svg { width: 38px; height: 38px; }
 
         .nav-menu {
             display: flex;
-            gap: 30px;
+            gap: 6px;
             list-style: none;
         }
 
         .nav-menu li a {
             text-decoration: none;
-            color: #5a4a3a;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            color: var(--text-body);
+            font-weight: 500;
+            font-size: 15px;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
             position: relative;
+            letter-spacing: 0.01em;
         }
 
-        .nav-menu li a:hover,
+        .nav-menu li a:hover {
+            color: var(--primary);
+            background: var(--primary-bg);
+        }
+
         .nav-menu li a.active {
-            color: #8b7355;
-            background-color: rgba(139, 115, 85, 0.1);
+            color: var(--primary);
+            background: var(--primary-bg);
         }
 
         .nav-menu li a.active::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: 6px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 2px;
-            background-color: #8b7355;
+            width: 22px;
+            height: 2.5px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
+        /* ============================================
+           主内容区
+           ============================================ */
         .main-content {
-            margin-top: 140px;
-            padding-bottom: 60px;
+            margin-top: 110px;
         }
 
+        /* ============================================
+           大区块卡片 · 宣纸质感+淡墨边框
+           ============================================ */
+        .section {
+            margin-bottom: var(--space-xl);
+            padding: var(--space-xl);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            background: radial-gradient(ellipse at right, rgba(139, 163, 154, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .section:hover { box-shadow: var(--shadow-hover); }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-border);
+            transition: var(--transition);
+        }
+
+        .section-icon:hover { transform: translateY(-3px); }
+
+        .section-icon svg { width: 50%; height: 50%; stroke: var(--primary); }
+
+        .section-title {
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: 0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           右上角实时时钟 · 淡雅卡片
+           ============================================ */
+        .realtime-clock {
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-border);
+            border-radius: var(--radius-md);
+            padding: 14px 22px;
+            text-align: center;
+            min-width: 150px;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+        .clock-time {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.06em;
+        }
+
+        .clock-greeting {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 6px;
+        }
+
+        /* ============================================
+           每日推送卡片 · 淡墨风格
+           ============================================ */
+        .daily-push-cards {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .push-card {
+            background: rgba(252, 250, 245, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        /* 左侧淡墨细条 */
+        .push-card::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 4px;
+            height: calc(100% - 32px);
+            border-radius: 0 4px 4px 0;
+            transition: var(--transition);
+        }
+
+        .push-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(180, 175, 165, 0.35);
+        }
+
+        /* 三个标签对应三色，统一淡雅渐变 */
+        .push-card.solar-term::before { background: linear-gradient(180deg, var(--primary-light), var(--primary)); }
+        .push-card.ai-course::before { background: linear-gradient(180deg, #A8C5D4, var(--ai-blue)); }
+        .push-card.anti-fraud::before { background: linear-gradient(180deg, #C8B9AA, var(--anti-warm)); }
+
+        /* 标签：完美圆角胶囊，淡雅高级 */
+        .push-card-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .push-card.solar-term .push-card-tag { background: linear-gradient(135deg, var(--primary-light), var(--primary)); }
+        .push-card.ai-course .push-card-tag { background: linear-gradient(135deg, #A8C5D4, var(--ai-blue)); }
+        .push-card.anti-fraud .push-card-tag { background: linear-gradient(135deg, #C8B9AA, var(--anti-warm)); }
+
+        .push-card-title {
+            font-size: 17.5px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 10px;
+        }
+
+        .push-card-content {
+            font-size: 15px;
+            color: var(--text-body);
+            line-height: 1.75;
+        }
+
+        .push-card-time {
+            font-size: 12px;
+            color: var(--text-tip);
+            margin-top: 16px;
+        }
+
+        /* 播放按钮淡雅版 */
+        .play-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(139, 163, 154, 0.12);
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(139, 163, 154, 0.18);
+        }
+
+        /* ============================================
+           AI工具按钮
+           ============================================ */
+        .tools-container {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-top: var(--space-sm);
+        }
+
+        .tool-button {
+            flex: 1;
+            max-width: 280px;
+            height: 72px;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-button.primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            box-shadow: 0 6px 18px rgba(139, 163, 154, 0.15);
+        }
+
+        .tool-button.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary-border);
+        }
+
+        .tool-button:hover { transform: translateY(-4px); }
+
+        /* ============================================
+           知识库卡片
+           ============================================ */
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: var(--space-md);
+        }
+
+        .knowledge-card {
+            background: rgba(255, 253, 248, 0.85);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            transition: var(--transition);
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .knowledge-card-title {
+            font-size: 17.5px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .knowledge-card-desc {
+            font-size: 14.5px;
+            color: var(--text-body);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .detail-button {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .detail-button:hover { transform: translateY(-2px); }
+
+        /* ============================================
+           页脚
+           ============================================ */
+        .footer {
+            margin-top: 60px;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-tip);
+            font-size: 13px;
+        }
+
+        /* ============================================
+           About 页面特有样式
+           ============================================ */
         .page-header {
             text-align: center;
-            margin-bottom: 50px;
-            padding: 40px 0;
-            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
-            border-bottom: 2px solid #c9b896;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-xl) 0;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
         }
 
         .page-title {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 15px;
+            color: var(--text-title);
+            margin-bottom: 10px;
         }
 
         .page-subtitle {
-            font-size: 18px;
-            color: #6b5d4f;
-        }
-
-        .section {
-            margin-bottom: 60px;
-            padding: 40px;
-            background-color: #fff;
-            border: 2px solid #c9b896;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 25px;
-            text-align: center;
+            font-size: 16px;
+            color: var(--text-sub);
         }
 
         .section-content {
-            font-size: 18px;
-            color: #5a4a3a;
+            font-size: 16px;
+            color: var(--text-body);
             line-height: 2;
             text-align: justify;
         }
@@ -171,70 +568,76 @@
         .mission-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 30px;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
         }
 
         .mission-card {
-            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
-            border: 1px solid #d4c4a8;
-            border-radius: 8px;
-            padding: 30px;
+            background: rgba(252, 250, 245, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
             text-align: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .mission-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(139, 115, 85, 0.15);
+            box-shadow: var(--shadow-hover);
         }
 
         .mission-icon {
             width: 60px;
             height: 60px;
-            margin: 0 auto 20px;
+            margin: 0 auto var(--space-md);
+        }
+
+        .mission-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--primary);
         }
 
         .mission-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: var(--space-sm);
         }
 
         .mission-desc {
-            font-size: 16px;
-            color: #5a4a3a;
+            font-size: 14px;
+            color: var(--text-body);
             line-height: 1.8;
         }
 
         .team-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-top: 30px;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
         }
 
         .team-member {
-            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
-            border: 1px solid #d4c4a8;
-            border-radius: 8px;
-            padding: 25px;
+            background: rgba(252, 250, 245, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
             text-align: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .team-member:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.15);
+            box-shadow: var(--shadow-hover);
         }
 
         .member-avatar {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
-            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            margin: 0 auto var(--space-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -243,119 +646,97 @@
         }
 
         .member-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #8b7355;
-            margin-bottom: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 6px;
         }
 
         .member-role {
-            font-size: 14px;
-            color: #6b5d4f;
+            font-size: 13px;
+            color: var(--text-sub);
         }
 
         .contact-info {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 30px;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
         }
 
         .contact-item {
-            background: linear-gradient(135deg, #faf8f5 0%, #f5f1e8 100%);
-            border: 1px solid #d4c4a8;
-            border-radius: 8px;
-            padding: 30px;
+            background: rgba(252, 250, 245, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
             text-align: center;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
         }
 
         .contact-icon {
             width: 50px;
             height: 50px;
-            margin: 0 auto 15px;
+            margin: 0 auto var(--space-sm);
+        }
+
+        .contact-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--primary);
         }
 
         .contact-label {
-            font-size: 16px;
-            color: #6b5d4f;
-            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: var(--space-xs);
         }
 
         .contact-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #8b7355;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-title);
         }
 
-        .footer {
-            background: linear-gradient(135deg, #f8f6f1 0%, #f0ebe3 100%);
-            border-top: 2px solid #8b7355;
-            padding: 40px 20px;
-            text-align: center;
+        /* ============================================
+           响应式完美适配
+           ============================================ */
+        @media (max-width:768px){
+            .nav-menu { display: none; }
+            .knowledge-grid { grid-template-columns: 1fr; }
+            .tools-container { flex-direction: column; align-items: center; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .realtime-clock { margin-left: 0; width: 100%; }
+            .mission-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-info { grid-template-columns: 1fr; }
+            .section { padding: var(--space-md); }
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #5a4a3a;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #8b7355;
-        }
-
-        .footer-copyright {
-            color: #6b5d4f;
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .mission-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .contact-info {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 25px;
-            }
-        }
+        /* 美化滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 163, 154, 0.18); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(139, 163, 154, 0.28); }
     </style>
 </head>
 <body>
+    <!-- Decorative background image placeholder -->
+    <img id="bg-ink-image" src="" alt="" />
+
     <nav class="nav-wrapper" id="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
+            <a href="index.html" class="nav-logo" style="text-decoration: none;">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="#8b7355" stroke-width="2" fill="none"/>
-                    <path d="M50 20 L50 80" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 35 L70 35" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 50 L70 50" stroke="#8b7355" stroke-width="2"/>
-                    <path d="M30 65 L70 65" stroke="#8b7355" stroke-width="2"/>
+                    <path d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M50 20 L50 80" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 35 L70 35" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 50 L70 50" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M30 65 L70 65" stroke="currentColor" stroke-width="2.5"/>
                 </svg>
                 <span>草本数智</span>
             </a>
@@ -372,14 +753,12 @@
     </nav>
 
     <main class="main-content">
-        <div class="page-header">
-            <div class="container">
+        <div class="container">
+            <div class="page-header">
                 <h1 class="page-title">关于我们</h1>
                 <p class="page-subtitle">传承中医智慧，守护银发健康</p>
             </div>
-        </div>
 
-        <div class="container">
             <section class="section">
                 <h2 class="section-title">平台简介</h2>
                 <div class="section-content">
@@ -396,22 +775,22 @@
                 <div class="mission-grid">
                     <div class="mission-card">
                         <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="35" stroke="#8b7355" stroke-width="2" fill="none"/>
-                            <path d="M50 25 L50 50 L70 65" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M50 25 L50 50 L70 65" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <h3 class="mission-title">传承创新</h3>
                         <p class="mission-desc">传承千年中医智慧，融合现代科技手段，让传统养生焕发新生</p>
                     </div>
                     <div class="mission-card">
                         <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 65 L30 75 L35 55 L20 40 L40 40 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 65 L30 75 L35 55 L20 40 L40 40 Z" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <h3 class="mission-title">用心服务</h3>
                         <p class="mission-desc">以用户需求为中心，提供贴心、专业、个性化的健康管理服务</p>
                     </div>
                     <div class="mission-card">
                         <svg class="mission-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M50 20 C65 20 75 30 75 45 C75 60 50 80 50 80 C50 80 25 60 25 45 C25 30 35 20 50 20" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M50 20 C65 20 75 30 75 45 C75 60 50 80 50 80 C50 80 25 60 25 45 C25 30 35 20 50 20" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <h3 class="mission-title">守护健康</h3>
                         <p class="mission-desc">帮助中老年用户科学养生，提高生活质量，享受幸福晚年</p>
@@ -450,24 +829,24 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="20" y="30" width="60" height="40" rx="5" stroke="#8b7355" stroke-width="2" fill="none"/>
-                            <path d="M20 35 L50 55 L80 35" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <rect x="20" y="30" width="60" height="40" rx="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M20 35 L50 55 L80 35" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <p class="contact-label">电子邮箱</p>
                         <p class="contact-value">contact@tcm-health.com</p>
                     </div>
                     <div class="contact-item">
                         <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M30 35 Q50 25 70 35 L70 65 Q50 75 30 65 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
-                            <circle cx="50" cy="50" r="8" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M30 35 Q50 25 70 35 L70 65 Q50 75 30 65 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="50" cy="50" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <p class="contact-label">客服热线</p>
                         <p class="contact-value">400-888-8888</p>
                     </div>
                     <div class="contact-item">
                         <svg class="contact-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M50 20 L80 40 L80 80 L20 80 L20 40 Z" stroke="#8b7355" stroke-width="2" fill="none"/>
-                            <path d="M35 80 L35 55 L65 55 L65 80" stroke="#8b7355" stroke-width="2" fill="none"/>
+                            <path d="M50 20 L80 40 L80 80 L20 80 L20 40 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M35 80 L35 55 L65 55 L65 80" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                         <p class="contact-label">公司地址</p>
                         <p class="contact-value">北京市朝阳区健康大厦</p>
@@ -478,15 +857,7 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="about.html">关于我们</a>
-                <a href="#">联系方式</a>
-                <a href="#">隐私政策</a>
-                <a href="#">版权声明</a>
-            </div>
-            <p class="footer-copyright">© 2024 中医养生平台 版权所有</p>
-        </div>
+        © 2024 草本数智平台 版权所有
     </footer>
 
     <script>
@@ -500,6 +871,43 @@
                     navbar.classList.remove('scrolled');
                 }
             });
+
+            // 尝试加载背景图片
+            tryLoadBgImage();
+        });
+
+        async function tryLoadBgImage() {
+            const candidates = [
+                '/image.png',
+                '/static/image.png',
+                '/images/image.png'
+            ];
+            const imgEl = document.getElementById('bg-ink-image');
+            if (!imgEl) return;
+
+            if (imgEl.src && imgEl.src !== window.location.origin + '/') {
+                return;
+            }
+
+            for (const path of candidates) {
+                try {
+                    const res = await fetch(path, { method: 'HEAD' });
+                    if (res.ok) {
+                        imgEl.src = path + '?v=' + Date.now();
+                        return;
+                    }
+                } catch (e) { /* 忽略 */ }
+            }
+        }
+
+        // 监听页面可见性变化
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                const imgEl = document.getElementById('bg-ink-image');
+                if (imgEl && (!imgEl.src || imgEl.src === window.location.origin + '/')) {
+                    tryLoadBgImage();
+                }
+            }
         });
     </script>
 </body>

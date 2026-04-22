@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================
-           【终极完美设计规范】东方极简轻奢 · iOS苹果高级风
+
            统一色系｜统一圆角｜统一间距｜柔和光影｜高级呼吸感
            ============================================ */
         :root {
@@ -58,8 +58,8 @@
 
             /* 动画 */
             --transition: all 320ms cubic-bezier(0.34, 0, 0.12, 1);
-            /* 背景墨色图片不透明度（可调） */
-            --bg-ink-opacity: 0.12;
+            /* 背景墨色图片不透明度（可调，适度提高以增强清晰度） */
+            --bg-ink-opacity: 0.32;
         }
 
         * {
@@ -94,7 +94,8 @@
                 radial-gradient(ellipse 260px 100px at 76% 92%, rgba(80, 86, 86, 0.018) 0%, transparent 62%),
                 radial-gradient(ellipse at top, rgba(90, 98, 94, 0.008), transparent 60%);
             pointer-events: none;
-            z-index: 0;
+            /* 将纸张纹理放到更后面，避免覆盖图片造成模糊感 */
+            z-index: -1;
         }
 
         /* 右侧轻微晕染，真正的竹影与远山由单张图片控制（id="bg-ink-image"） */
@@ -123,8 +124,29 @@
             z-index: 1;
         }
 
-        /* 控制单张背景图片的显示与透明度 */
-        #bg-ink-image { position: fixed; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: 0; opacity: var(--bg-ink-opacity); }
+        /* 控制单张背景图片的显示与透明度
+           - 接近全屏但略小：width:95vw，使其比最开始的 cover 稍小一些
+           - 提高 max-width 和 max-height，避免竖屏下过度裁剪 */
+        #bg-ink-image {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100vw;
+            max-width: none;
+            height: auto;
+            max-height: 100vh;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 0;
+            opacity: var(--bg-ink-opacity);
+            image-rendering: -webkit-optimize-contrast;
+            -webkit-image-rendering: -webkit-optimize-contrast;
+            filter: contrast(1.08) saturate(1.02) brightness(1.02);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
         @media (max-width: 768px) { #bg-ink-image { display: none; } }
 
         /* ============================================
@@ -812,6 +834,17 @@
         initPageData();
         // 尝试加载用户在 src 下放置的图片（有可能放在不同位置）
         tryLoadBgImage();
+
+        // 监听页面可见性变化，当用户切回页面时重新检查背景图
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                const imgEl = document.getElementById('bg-ink-image');
+                if (imgEl && (!imgEl.src || imgEl.src === window.location.origin + '/')) {
+                    console.info('页面恢复可见，重新加载背景图片');
+                    tryLoadBgImage();
+                }
+            }
+        });
     });
 
     // 尝试从候选路径加载背景图片，使用第一个可用的
@@ -829,7 +862,7 @@
         for (const path of candidates) {
             try {
                 const res = await fetch(path, { method: 'HEAD' });
-                if (res.ok) { imgEl.src = path; console.info('使用背景图片：', path); return; }
+                if (res.ok) { imgEl.src = path + '?v=' + Date.now(); console.info('使用背景图片：', path); return; }
             } catch (e) { /* 忽略 */ }
         }
         console.info('未找到候选背景图片，保持默认纹理与低饱和 SVG（如有）');
